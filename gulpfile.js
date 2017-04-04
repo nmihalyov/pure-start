@@ -76,7 +76,7 @@ gulp.task('browser-sync', function () {
 });
 
 // Следим за изменениями файлов, компилируем их и обновляем страницу/инжектим стили
-gulp.task('watch', ['browser-sync', 'css', 'pug', 'scripts'], function () {
+gulp.task('default', ['browser-sync', 'css', 'pug', 'scripts'], function () {
     gulp.watch('app/sass/**/*.sass', ['css']);
     gulp.watch('app/pug/**/*.pug', ['pug']);
     gulp.watch('app/js/*.js', browserSync.reload);
