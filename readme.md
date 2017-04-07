@@ -1,6 +1,6 @@
 # Gulp Pure Start
 
-v0.1.0
+v0.2.0
 
 ![Gulp Pure Start logo](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpWkJ6a09MdnVYdmc)
 
@@ -45,17 +45,10 @@ v0.1.0
 
 2. **HTML** файлы по умолчанию компилируются в корень **app**, при необходимости можно изменить в  **gulpfile.js**
 3. Все библиотеки устанавливаются в **app/libs**. Также можно изменить в **.bowerrc**. Для их подключения используйте таск **scripts** файла **gulpfile.js**, если это **JS** и файл **libs.sass** (который нужно импортировать в style.sass или подключать библиотеки сразу в нём), если это **CSS**
-4. По-умолчанию компилируется только **style.sass**, остальные следует импротировать в него, или заменить строку таска **sass**
+4. По-умолчанию компилируется только **style.sass**, остальные следует импротировать в него, или заменить строку таска **sass** **`return gulp.src('app/sass/style.sass')`** на **`return gulp.src('app/sass/*.sass')`**
+5. В верстку стоит подключать **минифицированные файлы** — style.min.css/common.min.js, т.к. именно **они попадают затем в билд!**
 
-```javascript
-return gulp.src('app/sass/style.sass')
-```
-на
-```javascript
-return gulp.src('app/sass/*.sass')
-```
-
-## Патчоут:
+## Патчноут:
  + 0.1.0 - Первый релиз
  + 0.2.0 - Добавлен ESLint
 
