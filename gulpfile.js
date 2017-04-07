@@ -14,7 +14,16 @@ var gulp         = require('gulp'),                 // Сам сборщик Gul
     del          = require('del'),                  // Удаление файлов директории
     imagemin     = require('gulp-imagemin'),        // Пакет минификации изображений (в зависимостях также идут дополнительные пакеты)
     cache        = require('gulp-cache'),           // Работа с кэшом
-    autoprefixer = require('gulp-autoprefixer');    // Пакет расстановки вендорных перфиксов
+    autoprefixer = require('gulp-autoprefixer'),    // Пакет расстановки вендорных перфиксов
+    eslint       = require('gulp-eslint');          // Линтинг JS-кода
+
+
+// Функция линтинга, пригодится нам позже
+function esLinting(){
+    return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
+    .pipe(eslint({fix: true}))
+    .pipe(eslint.format());
+}
 
 // Компилируем SASS в CSS (можно изменить на SCSS) и добавляем вендорные префиксы
 gulp.task('sass',  function () {
@@ -45,6 +54,16 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest('app/js'));
 });
 
+// Минификация кастомных скриптов JS
+gulp.task('js-min', function () {
+    return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
+    .pipe(uglifyjs())
+    .pipe(rename({
+        suffix: '.min'
+    }))
+    .pipe(gulp.dest('app/js'));
+});
+
 // Минифицируем CSS (предвариетльно собрав SASS)
 gulp.task('css', ['sass'], function () {
     return gulp.src('app/css/style.css')
@@ -65,6 +84,11 @@ gulp.task('img', function () {
     .pipe(gulp.dest('dist/img'));
 });
 
+// Линтинг JS-кода
+gulp.task('eslint', function () {
+    esLinting();
+});
+
 // Запускаем наш локальный сервер из директории 'app/'
 gulp.task('browser-sync', function () {
     browserSync({
@@ -79,7 +103,10 @@ gulp.task('browser-sync', function () {
 gulp.task('default', ['browser-sync', 'css', 'pug', 'scripts'], function () {
     gulp.watch('app/sass/**/*.sass', ['css']);
     gulp.watch('app/pug/**/*.pug', ['pug']);
+    gulp.watch('app/*.html', browserSync.reload);
+    gulp.watch('app/js/*.js', ['eslint', 'js-min']);
     gulp.watch('app/js/*.js', browserSync.reload);
+    esLinting();
 });
 
 // Очищаем директорию билда 'dist/'
@@ -94,7 +121,7 @@ gulp.task('clear', function () {
 
 
 // Собираем наш билд в директорию 'build/'
-gulp.task('build', ['clean', 'img', 'css', 'pug', 'scripts'], function () {
+gulp.task('build', ['clean', 'img', 'css', 'pug', 'scripts', 'js-min', 'eslint'], function () {
 
     // Собираем CSS
     var buildCss = gulp.src('app/css/style.min.css')
@@ -105,7 +132,8 @@ gulp.task('build', ['clean', 'img', 'css', 'pug', 'scripts'], function () {
     .pipe(gulp.dest('dist/fonts'));
 
     // Собираем JS
-    var buildJs = gulp.src('app/js/*.js')
+    var buildJs = gulp.src('app/js/*.min.js')
+    .pipe(uglifyjs())
     .pipe(gulp.dest('dist/js'));
 
     // Собираем HTML

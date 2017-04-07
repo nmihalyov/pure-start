@@ -55,6 +55,11 @@ return gulp.src('app/sass/style.sass')
 return gulp.src('app/sass/*.sass')
 ```
 
+## Патчоут:
+ + 0.1.0 - Первый релиз
+ + 0.2.0 - Добавлен ESLint
+
+
 ## Обратная связь
 Почта: [nikita.mihalyov@gmail.com](mailto:nikita.mihalyov@gmail.com)
 

@@ -1,6 +1,6 @@
 {
 	"name": "gulp-pure-start",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Start your project with 'Gulp Pure Start' easily then ever!",
 	"main": "gulpfile.js",
 	"scripts": {
@@ -16,11 +16,18 @@
 	"devDependencies": {
 		"browser-sync": "^2.18.8",
 		"del": "^2.2.2",
+		"eslint": "^3.19.0",
+		"eslint-config-standard": "^10.2.0",
+		"eslint-plugin-import": "^2.2.0",
+		"eslint-plugin-node": "^4.2.2",
+		"eslint-plugin-promise": "^3.5.0",
+		"eslint-plugin-standard": "^3.0.1",
 		"gulp": "^3.9.1",
 		"gulp-autoprefixer": "^3.1.1",
 		"gulp-cache": "^0.4.5",
 		"gulp-concat": "^2.6.1",
 		"gulp-cssnano": "^2.1.2",
+		"gulp-eslint": "^3.0.1",
 		"gulp-imagemin": "^3.1.1",
 		"gulp-pug": "^3.2.0",
 		"gulp-rename": "^1.2.2",
