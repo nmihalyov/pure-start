@@ -57,4 +57,4 @@ v0.2.0
 ## Обратная связь
 Почта: [nikita.mihalyov@gmail.com](mailto:nikita.mihalyov@gmail.com)
 
-Или написать **Issue**
+Или написать **[Issue](https://github.com/nmihalyov/gulp-pure-start/issues/new)**
