@@ -3,23 +3,23 @@
  * ISC Licensed
  */
 
-var gulp         = require('gulp'),                 // Сам сборщик Gulp
-    sass         = require('gulp-sass'),            // Пакет компиляции SASS/SCSS
-    pug          = require('gulp-pug'),             // Пакет компиляции Pug (бывш. Jade)
-    browserSync  = require('browser-sync'),         // Запуск локального сервера 
-    concat       = require('gulp-concat'),          // Пакет конкатенации файлов
-    uglifyjs     = require('gulp-uglifyjs'),        // Пакет минификации файлов JavaScript
-    cssnano      = require('gulp-cssnano'),         // Пакет минификации файлов CSS
-    rename       = require('gulp-rename'),          // Переименовывание файлов
-    del          = require('del'),                  // Удаление файлов директории
-    imagemin     = require('gulp-imagemin'),        // Пакет минификации изображений (в зависимостях также идут дополнительные пакеты)
-    cache        = require('gulp-cache'),           // Работа с кэшом
-    autoprefixer = require('gulp-autoprefixer'),    // Пакет расстановки вендорных перфиксов
-    eslint       = require('gulp-eslint');          // Линтинг JS-кода
+const gulp         = require('gulp'),                 // Сам сборщик Gulp
+      sass         = require('gulp-sass'),            // Пакет компиляции SASS/SCSS
+      pug          = require('gulp-pug'),             // Пакет компиляции Pug (бывш. Jade)
+      browserSync  = require('browser-sync'),         // Запуск локального сервера 
+      concat       = require('gulp-concat'),          // Пакет конкатенации файлов
+      uglifyjs     = require('gulp-uglifyjs'),        // Пакет минификации файлов JavaScript
+      cssnano      = require('gulp-cssnano'),         // Пакет минификации файлов CSS
+      rename       = require('gulp-rename'),          // Переименовывание файлов
+      del          = require('del'),                  // Удаление файлов директории
+      imagemin     = require('gulp-imagemin'),        // Пакет минификации изображений (в зависимостях также идут дополнительные пакеты)
+      cache        = require('gulp-cache'),           // Работа с кэшом
+      autoprefixer = require('gulp-autoprefixer'),    // Пакет расстановки вендорных перфиксов
+      eslint       = require('gulp-eslint');          // Линтинг JS-кода
 
 
 // Функция линтинга, пригодится нам позже
-function esLinting(){
+function esLinting() {
     return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
     .pipe(eslint({fix: true}))
     .pipe(eslint.format());
@@ -61,7 +61,10 @@ gulp.task('js-min', function () {
     .pipe(rename({
         suffix: '.min'
     }))
-    .pipe(gulp.dest('app/js'));
+    .pipe(gulp.dest('app/js'))
+    .pipe(browserSync.reload({
+        stream: true
+    }));
 });
 
 // Минифицируем CSS (предвариетльно собрав SASS)
@@ -101,12 +104,11 @@ gulp.task('browser-sync', function () {
 
 // Следим за изменениями файлов, компилируем их и обновляем страницу/инжектим стили
 gulp.task('default', ['browser-sync', 'css', 'pug', 'scripts'], function () {
+    esLinting();
     gulp.watch('app/sass/**/*.sass', ['css']);
     gulp.watch('app/pug/**/*.pug', ['pug']);
-    gulp.watch('app/*.html', browserSync.reload);
     gulp.watch('app/js/*.js', ['eslint', 'js-min']);
-    gulp.watch('app/js/*.js', browserSync.reload);
-    esLinting();
+    gulp.watch('app/*.html', browserSync.reload);
 });
 
 // Очищаем директорию билда 'dist/'
@@ -133,7 +135,6 @@ gulp.task('build', ['clean', 'img', 'css', 'pug', 'scripts', 'js-min', 'eslint']
 
     // Собираем JS
     var buildJs = gulp.src('app/js/*.min.js')
-    .pipe(uglifyjs())
     .pipe(gulp.dest('dist/js'));
 
     // Собираем HTML
