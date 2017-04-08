@@ -1,6 +1,6 @@
 # Gulp Pure Start
 
-v0.2.0
+v0.2.1
 
 ![Gulp Pure Start logo](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpWkJ6a09MdnVYdmc)
 
@@ -52,6 +52,7 @@ v0.2.0
 ## Патчноут:
  + 0.1.0 - Первый релиз
  + 0.2.0 - Добавлен ESLint
+ + 0.2.1 - Внесение исправлений
 
 
 ## Обратная связь
