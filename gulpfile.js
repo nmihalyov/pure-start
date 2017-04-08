@@ -17,58 +17,16 @@ const gulp         = require('gulp'),                 // Сам сборщик G
       autoprefixer = require('gulp-autoprefixer'),    // Пакет расстановки вендорных перфиксов
       eslint       = require('gulp-eslint');          // Линтинг JS-кода
 
-
-// Функция линтинга, пригодится нам позже
-function esLinting() {
-    return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
-    .pipe(eslint({fix: true}))
-    .pipe(eslint.format());
-}
-
 // Компилируем SASS в CSS (можно изменить на SCSS) и добавляем вендорные префиксы
-gulp.task('sass',  function () {
+gulp.task('sass',  () => {
     return gulp.src('app/sass/style.sass')  // В этом файле хранятся основные стили, остальные следует импортировать в него
     .pipe(sass())
     .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8'], {cascade: false}))
     .pipe(gulp.dest('app/css'));
 });
 
-// Компилируем Pug (Jade) в HTML без его минификации
-gulp.task('pug',  function () {
-    return gulp.src('app/pug/*.pug')
-    .pipe(pug({
-        pretty: '\t'
-    }))
-    .pipe(gulp.dest('app'))
-    .pipe(browserSync.reload({
-        stream: true
-    }));
-});
-
-// Подключаем JS файлы бибилотек из директории 'app/libs/', установленные bower'ом, конкатенируем их и минифицируем
-gulp.task('scripts', function () {
-    return gulp.src([
-        'app/libs/jquery/dist/jquery.min.js' // Пример подключения библиотеки в проект (по-умолчанию не уставлена)
-    ]).pipe(concat('libs.min.js'))
-    .pipe(uglifyjs())
-    .pipe(gulp.dest('app/js'));
-});
-
-// Минификация кастомных скриптов JS
-gulp.task('js-min', function () {
-    return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
-    .pipe(uglifyjs())
-    .pipe(rename({
-        suffix: '.min'
-    }))
-    .pipe(gulp.dest('app/js'))
-    .pipe(browserSync.reload({
-        stream: true
-    }));
-});
-
 // Минифицируем CSS (предвариетльно собрав SASS)
-gulp.task('css', ['sass'], function () {
+gulp.task('css', ['sass'], () => {
     return gulp.src('app/css/style.css')
     .pipe(cssnano())
     .pipe(rename({
@@ -80,20 +38,56 @@ gulp.task('css', ['sass'], function () {
     }));
 });
 
+// Компилируем Pug (Jade) в HTML без его минификации
+gulp.task('pug',  () => {
+    return gulp.src('app/pug/*.pug')
+    .pipe(pug({
+        pretty: '\t'
+    }))
+    .pipe(gulp.dest('app'))
+    .pipe(browserSync.reload({
+        stream: true
+    }));
+});
+
+// Подключаем JS файлы бибилотек из директории 'app/libs/', установленные bower'ом, конкатенируем их и минифицируем
+gulp.task('scripts', () => {
+    return gulp.src([
+        'app/libs/jquery/dist/jquery.min.js' // Пример подключения библиотеки в проект (по-умолчанию не уставлена)
+    ]).pipe(concat('libs.min.js'))
+    .pipe(uglifyjs())
+    .pipe(gulp.dest('app/js'));
+});
+
+// Линтинг JS-кода
+gulp.task('eslint', () => {
+    return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
+    .pipe(eslint({fix: true}))
+    .pipe(eslint.format());
+});
+
+// Минификация кастомных скриптов JS
+gulp.task('js-min', ['eslint'], () => {
+    return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
+    .pipe(uglifyjs())
+    .pipe(rename({
+        suffix: '.min'
+    }))
+    .pipe(gulp.dest('app/js'))
+    .pipe(browserSync.reload({
+        stream: true
+    }));
+});
+
 // Минифицируем изображения и кидаем их в кэш
-gulp.task('img', function () {
+gulp.task('img', () => {
     return gulp.src('app/img/**/*')
     .pipe(cache(imagemin()))
     .pipe(gulp.dest('dist/img'));
 });
 
-// Линтинг JS-кода
-gulp.task('eslint', function () {
-    esLinting();
-});
-
 // Запускаем наш локальный сервер из директории 'app/'
-gulp.task('browser-sync', function () {
+gulp.task('browser-sync', () => {
     browserSync({
         server: {
             baseDir: 'app'
@@ -103,27 +97,26 @@ gulp.task('browser-sync', function () {
 });
 
 // Следим за изменениями файлов, компилируем их и обновляем страницу/инжектим стили
-gulp.task('default', ['browser-sync', 'css', 'pug', 'scripts'], function () {
-    esLinting();
+gulp.task('default', ['browser-sync', 'css', 'pug', 'scripts', 'js-min'], () => {
     gulp.watch('app/sass/**/*.sass', ['css']);
     gulp.watch('app/pug/**/*.pug', ['pug']);
-    gulp.watch('app/js/*.js', ['eslint', 'js-min']);
+    gulp.watch(['app/js/*.js', '!app/js/*.min.js'], ['js-min']);
     gulp.watch('app/*.html', browserSync.reload);
 });
 
 // Очищаем директорию билда 'dist/'
-gulp.task('clean', function () {
+gulp.task('clean', () => {
     return del.sync('dist/**/*');
 });
 
 // Чистим кэш изображений (вообще весь кэш)
-gulp.task('clear', function () {
+gulp.task('clear', () => {
     return cache.clearAll();
 });
 
 
-// Собираем наш билд в директорию 'build/'
-gulp.task('build', ['clean', 'img', 'css', 'pug', 'scripts', 'js-min', 'eslint'], function () {
+// Собираем наш билд в директорию 'dist/'
+gulp.task('build', ['clean', 'img', 'css', 'pug', 'scripts', 'js-min', 'eslint'], () => {
 
     // Собираем CSS
     var buildCss = gulp.src('app/css/style.min.css')
