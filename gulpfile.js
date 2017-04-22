@@ -70,7 +70,13 @@ gulp.task('scripts', () => {
 // Линтинг JS-кода
 gulp.task('eslint', () => {
     return gulp.src(['app/js/*.js', '!app/js/*.min.js', '!app/js/libs.js'])
-    .pipe(eslint({fix: true}))
+    .pipe(eslint({
+        fix: true,
+        rules: {
+            'no-undef': 3
+        },
+        globals: ['$']
+    }))
     .pipe(eslint.format());
 });
 
