@@ -16,7 +16,8 @@ const gulp         = require('gulp'),                       // Сам сборщ
       imagemin     = require('gulp-imagemin'),              // Пакет минификации изображений (в зависимостях также идут дополнительные пакеты)
       cache        = require('gulp-cache'),                 // Работа с кэшом
       autoprefixer = require('gulp-autoprefixer'),          // Пакет расстановки вендорных перфиксов
-      eslint       = require('gulp-eslint');                // Линтинг JS-кода
+      eslint       = require('gulp-eslint'),                // Линтинг JS-кода
+      jsImport     = require('gulp-file-include');          // Импорт файлов JS
 
 // Компилируем SASS в CSS (можно изменить на SCSS) и добавляем вендорные префиксы
 gulp.task('sass',  () => {
@@ -54,23 +55,28 @@ gulp.task('pug',  () => {
 
 // Подключаем JS файлы бибилотек из директории 'app/libs/', установленные bower'ом, конкатенируем их и минифицируем
 gulp.task('scripts', () => {
-    return gulp.src([
-        'app/libs/jquery/dist/jquery.min.js' // Пример подключения библиотеки в проект (по-умолчанию не уставлена)
-    ]).pipe(concat('libs.min.js'))
+    return gulp.src('app/js/libs.js')   // файл, в который импортируются наши библиотеки
+    .pipe(jsImport({
+        prefix: '@@',
+        basepath: '@file'
+    }))
     .pipe(uglifyjs())
+    .pipe(rename({
+        suffix: '.min'
+    }))
     .pipe(gulp.dest('app/js'));
 });
 
 // Линтинг JS-кода
 gulp.task('eslint', () => {
-    return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
+    return gulp.src(['app/js/*.js', '!app/js/*.min.js', '!app/js/libs.js'])
     .pipe(eslint({fix: true}))
     .pipe(eslint.format());
 });
 
 // Минификация кастомных скриптов JS
 gulp.task('js-min', ['eslint'], () => {
-    return gulp.src(['app/js/*.js', '!app/js/*.min.js'])
+    return gulp.src(['app/js/*.js', '!app/js/*.min.js', '!app/js/libs.js'])
     .pipe(uglifyjs())
     .pipe(rename({
         suffix: '.min'
