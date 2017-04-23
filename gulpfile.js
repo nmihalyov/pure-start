@@ -5,7 +5,7 @@
 
 const gulp         = require('gulp'),                       // Сам сборщик Gulp
       sass         = require('gulp-sass'),                  // Пакет компиляции SASS/SCSS
-      mmq          = require('gulp-merge-media-queries'),   // Пакет компиляции SASS/SCSS
+      mmq          = require('gulp-merge-media-queries'),   // Плагин, соединющий медиа-запросы
       pug          = require('gulp-pug'),                   // Пакет компиляции Pug (бывш. Jade)
       browserSync  = require('browser-sync'),               // Запуск локального сервера 
       concat       = require('gulp-concat'),                // Пакет конкатенации файлов
@@ -73,7 +73,7 @@ gulp.task('eslint', () => {
     .pipe(eslint({
         fix: true,
         rules: {
-            'no-undef': 3
+            'no-undef': 0
         },
         globals: ['$']
     }))

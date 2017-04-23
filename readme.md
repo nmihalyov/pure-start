@@ -1,6 +1,6 @@
 # Gulp Pure Start
 
-v0.3.3
+v0.3.4
 
 ![Gulp Pure Start logo](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpWkJ6a09MdnVYdmc)
 
@@ -60,6 +60,7 @@ v0.3.3
  + 0.3.1 - Добавлен шаблон **Pug** для более бастрого старта
  + 0.3.2 - Исправление ошибок
  + 0.3.3 - Исправление ошибок работы тасков JS
+ + 0.3.4 - Исправления недочётов
 
 
 ## Обратная связь
