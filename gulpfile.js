@@ -17,7 +17,7 @@ const gulp         = require('gulp'),                       // Сам сборщ
       cache        = require('gulp-cache'),                 // Работа с кэшом
       autoprefixer = require('gulp-autoprefixer'),          // Пакет расстановки вендорных перфиксов
       eslint       = require('gulp-eslint'),                // Линтинг JS-кода
-      jsImport     = require('gulp-file-include');          // Импорт файлов JS
+      importFile   = require('gulp-file-include');          // Импорт файлов
 
 // Компилируем SASS в CSS (можно изменить на SCSS) и добавляем вендорные префиксы
 gulp.task('sass',  () => {
@@ -56,7 +56,7 @@ gulp.task('pug',  () => {
 // Подключаем JS файлы бибилотек из директории 'app/libs/', установленные bower'ом, конкатенируем их и минифицируем
 gulp.task('scripts', () => {
     return gulp.src('app/js/libs.js')   // файл, в который импортируются наши библиотеки
-    .pipe(jsImport({
+    .pipe(importFile({
         prefix: '@@',
         basepath: '@file'
     }))
@@ -73,9 +73,9 @@ gulp.task('eslint', () => {
     .pipe(eslint({
         fix: true,
         rules: {
-            'no-undef': 0
+            'no-undef': 0       // делаем так, чтобы ESLint не ругался на непоределённые переменные (в т.ч. глобальные, библиотек)
         },
-        globals: ['$']
+        globals: ['$']          // определяем глобальные переменные (самое распространённое - jQuery)
     }))
     .pipe(eslint.format());
 });
@@ -96,7 +96,7 @@ gulp.task('js-min', ['eslint'], () => {
 // Минифицируем изображения и кидаем их в кэш
 gulp.task('img', () => {
     return gulp.src('app/img/**/*')
-    .pipe(cache(imagemin()))
+    .pipe(cache(imagemin([imagemin.gifsicle(), imagemin.jpegtran(), imagemin.optipng()])))
     .pipe(gulp.dest('dist/img'));
 });
 
