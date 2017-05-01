@@ -50,7 +50,7 @@ v0.3.6
 5. В верстку стоит подключать **минифицированные файлы** — style.min.css/common.min.js/libs.min.js, т.к. именно **они попадают затем в билд!**
 6. Существует шаблон Pug для более быстрого старта - **app/pug/index.pug**
 
-### Патчноут
+### [Патчноут](https://github.com/nmihalyov/gulp-pure-start/blob/master/changelog.md)
 
 ## Обратная связь
 Почта: [nikita.mihalyov@gmail.com](mailto:nikita.mihalyov@gmail.com)
