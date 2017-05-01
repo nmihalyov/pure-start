@@ -111,7 +111,7 @@ gulp.task('browser-sync', () => {
 });
 
 // Следим за изменениями файлов, компилируем их и обновляем страницу/инжектим стили
-gulp.task('default', ['browser-sync', 'css', 'pug', 'scripts', 'js-min'], () => {
+gulp.task('default', ['css', 'pug', 'scripts', 'js-min', 'browser-sync'], () => {
     gulp.watch('app/sass/**/*.sass', ['css']);
     gulp.watch('app/pug/**/*.pug', ['pug']);
     gulp.watch(['app/js/*.js', '!app/js/*.min.js'], ['js-min']);
