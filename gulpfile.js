@@ -26,7 +26,7 @@ gulp.task('sass',  () => {
 		.pipe(sass())
 		.pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8'], {cascade: false}))
 		.pipe(gulp.dest('app/css'));
-	}, 100);
+	}, 200);
 });
 
 // Минифицируем CSS (предвариетльно собрав SASS)
@@ -51,9 +51,6 @@ gulp.task('pug',  () => {
     .pipe(pug({
         pretty: '\t'
     }))
-	.pipe(rename({
-		extname: '.php'
-	}))
     .pipe(gulp.dest('app'))
     .pipe(browserSync.reload({
         stream: true
@@ -71,7 +68,10 @@ gulp.task('scripts', ['eslint'], () => {
     .pipe(rename({
         suffix: '.min'
     }))
-    .pipe(gulp.dest('app/js'));
+    .pipe(gulp.dest('app/js'))
+    .pipe(browserSync.reload({
+        stream: true
+    }));
 });
 
 // Линтинг JS-кода
@@ -109,7 +109,7 @@ gulp.task('default', ['css', 'pug', 'scripts', 'browser-sync'], () => {
     gulp.watch('app/sass/**/*.sass', ['css']);
     gulp.watch('app/pug/**/*.pug', ['pug']);
     gulp.watch(['app/js/*.js', '!app/js/*.min.js'], ['scripts']);
-    gulp.watch(['app/*.html', 'app/**/*.php'], browserSync.reload);
+    gulp.watch('app/*.html', browserSync.reload);
 });
 
 // Очищаем директорию билда 'dist/'
