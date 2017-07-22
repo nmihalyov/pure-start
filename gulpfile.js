@@ -70,9 +70,9 @@ gulp.task('pug',  () => {
 		message: '<%= error.message %>'
 	}))
     .pipe(gulp.dest('app'))
-    // .pipe(browserSync.reload({
-    //     stream: true
-    // }));
+    .pipe(browserSync.reload({
+        stream: true
+    }));
 });
 
 // Линтинг JS-кода
