@@ -11,55 +11,92 @@ const gulp         = require('gulp'),                       // Сам сборщ
       concat       = require('gulp-concat'),                // Пакет конкатенации файлов
       uglifyjs     = require('gulp-uglifyjs'),              // Пакет минификации файлов JavaScript
       cssnano      = require('gulp-cssnano'),               // Пакет минификации файлов CSS
-      rename       = require('gulp-rename'),                // Переименовывание файлов
+	  rename       = require('gulp-rename'),                // Переименовывание файлов
+	  uncss		   = require('gulp-uncss'),					// Очищает все неиспользуемые стили
       del          = require('del'),                        // Удаление файлов директории
       imagemin     = require('gulp-imagemin'),              // Пакет минификации изображений (в зависимостях также идут дополнительные пакеты)
       cache        = require('gulp-cache'),                 // Работа с кэшом
-      autoprefixer = require('gulp-autoprefixer'),          // Пакет расстановки вендорных перфиксов
+	  autoprefixer = require('gulp-autoprefixer'),          // Пакет расстановки вендорных перфиксов
+	  plumber	   = require('gulp-plumber'),				// Предотвращает разрыв pipe'ов, вызванных ошибками gulp-плагинов
+	  notify	   = require('gulp-notify'),				// Выводит уведомления
       eslint       = require('gulp-eslint'),                // Линтинг JS-кода
-      importFile   = require('gulp-file-include');          // Импорт файлов
+      importFile   = require('gulp-file-include');          // Импорт файлов (@@include ('path/to/file'))
 
 // Компилируем SASS в CSS (можно изменить на SCSS) и добавляем вендорные префиксы
 gulp.task('sass',  () => {
-	setTimeout(function () {
-		return gulp.src('app/sass/style.sass')  // В этом файле хранятся основные стили, остальные следует импортировать в него
-		.pipe(sass())
-		.pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8'], {cascade: false}))
-		.pipe(gulp.dest('app/css'));
-	}, 200);
+	return gulp.src('app/sass/style.sass')  // В этом файле хранятся основные стили, остальные следует импортировать в него
+	.pipe(sass({
+		outputStyle: ':nested'
+	}))
+	.on('error', notify.onError({
+		title: 'SASS',
+		message: '<%= error.message %>'
+	}))
+	.pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8'], {cascade: false}))
+	.pipe(gulp.dest('app/css'));
 });
 
 // Минифицируем CSS (предвариетльно собрав SASS)
 gulp.task('css', ['sass'], () => {
-	setTimeout(function () {
-		return gulp.src('app/css/style.css')
-		.pipe(mmq())
-		.pipe(cssnano())
-		.pipe(rename({
-			suffix: '.min'
-		}))
-		.pipe(gulp.dest('app/css'))
-		.pipe(browserSync.reload({
-			stream: true
-		}));
-	}, 200);
+	return gulp.src('app/css/style.css')
+	.pipe(mmq())
+	.pipe(cssnano())
+	.pipe(rename({
+		suffix: '.min'
+	}))
+	.pipe(gulp.dest('app/css'))
+	.pipe(browserSync.reload({
+		stream: true
+	}));
+});
+
+// Чистим неиспользуемые стили
+gulp.task('uncss', () => {
+	return gulp.src('app/css/*.css')
+	.pipe(uncss({
+        html: ['app/*.html']
+    }))
+	.pipe(gulp.dest('app/css'));
 });
 
 // Компилируем Pug (Jade) в HTML без его минификации
 gulp.task('pug',  () => {
     return gulp.src('app/pug/*.pug')
     .pipe(pug({
-        pretty: '\t'
-    }))
+        pretty: true
+	}))
+	.on('error', notify.onError({
+		title: 'PUG',
+		message: '<%= error.message %>'
+	}))
     .pipe(gulp.dest('app'))
-    .pipe(browserSync.reload({
-        stream: true
-    }));
+    // .pipe(browserSync.reload({
+    //     stream: true
+    // }));
 });
 
-// Подключаем JS файлы бибилотек из директории 'app/libs/', установленные bower'ом, и результирующего файла common.js, конкатенируем их и минифицируем
+// Линтинг JS-кода
+gulp.task('eslint', () => {
+    return gulp.src(['app/js/common.js', 'app/partials/*.js'])
+    .pipe(eslint({
+        fix: true,
+        rules: {
+            'no-undef': 0       // делаем так, чтобы ESLint не ругался на непоределённые переменные (в т.ч. глобальные, библиотек)
+        },
+        globals: ['$']          // определяем глобальные переменные (самое распространённое - jQuery)
+    }))
+    .pipe(eslint.format());
+});
+
+// Подключаем JS файлы результирующего файла common.js, конкатенируем и минифицируем
 gulp.task('scripts', ['eslint'], () => {
-    return gulp.src('app/js/libs.js')   // файл, в который импортируются наши библиотеки
+	return gulp.src('app/js/common.js')   // основной файл наших сценариев
+	.pipe(plumber({
+        errorHandler: notify.onError({
+            title: 'JS',
+            message: '<%= error.message %>'
+        })
+    }))
     .pipe(importFile({
         prefix: '@@',
         basepath: '@file'
@@ -74,17 +111,27 @@ gulp.task('scripts', ['eslint'], () => {
     }));
 });
 
-// Линтинг JS-кода
-gulp.task('eslint', () => {
-    return gulp.src(['app/js/*.js', '!app/js/*.min.js', '!app/js/libs.js'])
-    .pipe(eslint({
-        fix: true,
-        rules: {
-            'no-undef': 0       // делаем так, чтобы ESLint не ругался на непоределённые переменные (в т.ч. глобальные, библиотек)
-        },
-        globals: ['$']          // определяем глобальные переменные (самое распространённое - jQuery)
+// Подключаем JS файлы бибилотек из директории 'app/libs/', установленные bower'ом, конкатенируем их и минифицируем
+gulp.task('jsLibs', () => {
+	return gulp.src('app/js/libs.js')   // файл, в который импортируются наши библиотеки
+	.pipe(plumber({
+        errorHandler: notify.onError({
+            title: 'JS',
+            message: '<%= error.message %>'
+        })
     }))
-    .pipe(eslint.format());
+    .pipe(importFile({
+        prefix: '@@',
+        basepath: '@file'
+    }))
+    .pipe(uglifyjs())	// минификация JS
+    .pipe(rename({
+        suffix: '.min'
+    }))
+    .pipe(gulp.dest('app/js'))
+    .pipe(browserSync.reload({
+        stream: true
+    }));
 });
 
 // Минифицируем изображения и кидаем их в кэш
@@ -105,10 +152,11 @@ gulp.task('browser-sync', () => {
 });
 
 // Следим за изменениями файлов, компилируем их и обновляем страницу/инжектим стили
-gulp.task('default', ['css', 'pug', 'scripts', 'browser-sync'], () => {
+gulp.task('default', ['css', 'pug', 'jsLibs', 'scripts', 'browser-sync'], () => {
     gulp.watch('app/sass/**/*.sass', ['css']);
     gulp.watch('app/pug/**/*.pug', ['pug']);
-    gulp.watch(['app/js/*.js', '!app/js/*.min.js'], ['scripts']);
+    gulp.watch(['app/js/common.js', 'app/js/partials/*.js'], ['scripts']);
+    gulp.watch('app/js/libs.js', ['jsLibs']);
     gulp.watch('app/*.html', browserSync.reload);
 });
 
