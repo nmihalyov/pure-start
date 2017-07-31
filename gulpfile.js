@@ -7,9 +7,11 @@ const gulp         = require('gulp'),                       // Сам сборщ
       sass         = require('gulp-sass'),                  // Пакет компиляции SASS/SCSS
       mmq          = require('gulp-merge-media-queries'),   // Плагин, соединющий медиа-запросы
       pug          = require('gulp-pug'),                   // Пакет компиляции Pug (бывш. Jade)
-      browserSync  = require('browser-sync'),               // Запуск локального сервера 
+	  browserSync  = require('browser-sync'),               // Запуск локального сервера 
+	  babel 	   = require('gulp-babel'),					// Транспиляция ES6 в ES5
+	  sourcemaps   = require('gulp-sourcemaps'),			// Плагин, создающий source maps к файлам
       concat       = require('gulp-concat'),                // Пакет конкатенации файлов
-      uglifyjs     = require('gulp-uglifyjs'),              // Пакет минификации файлов JavaScript
+      uglify       = require('gulp-uglify'),              	// Пакет минификации файлов JavaScript
       cssnano      = require('gulp-cssnano'),               // Пакет минификации файлов CSS
 	  rename       = require('gulp-rename'),                // Переименовывание файлов
 	  uncss		   = require('gulp-uncss'),					// Очищает все неиспользуемые стили
@@ -101,10 +103,13 @@ gulp.task('scripts', ['eslint'], () => {
         prefix: '@@',
         basepath: '@file'
     }))
-    .pipe(uglifyjs())	// минификация JS
+	.pipe(sourcemaps.init())	// создание sourcemaps'ов
+    .pipe(babel())				// транспиляция ES6 кода
+    .pipe(uglify())				// минификация JS
     .pipe(rename({
         suffix: '.min'
     }))
+	.pipe(sourcemaps.write())
     .pipe(gulp.dest('app/js'))
     .pipe(browserSync.reload({
         stream: true
@@ -113,7 +118,7 @@ gulp.task('scripts', ['eslint'], () => {
 
 // Подключаем JS файлы бибилотек из директории 'app/libs/', установленные bower'ом, конкатенируем их и минифицируем
 gulp.task('jsLibs', () => {
-	return gulp.src('app/js/libs.js')   // файл, в который импортируются наши библиотеки
+	return gulp.src('app/js/libs.js')	// файл, в который импортируются наши библиотеки
 	.pipe(plumber({
         errorHandler: notify.onError({
             title: 'JS',
@@ -124,7 +129,7 @@ gulp.task('jsLibs', () => {
         prefix: '@@',
         basepath: '@file'
     }))
-    .pipe(uglifyjs())	// минификация JS
+    .pipe(uglify())		// минификация JS
     .pipe(rename({
         suffix: '.min'
     }))
