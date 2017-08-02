@@ -13,7 +13,8 @@ const gulp         = require('gulp'),                       // Сам сборщ
       concat       = require('gulp-concat'),                // Пакет конкатенации файлов
       uglify       = require('gulp-uglify'),              	// Пакет минификации файлов JavaScript
       cssnano      = require('gulp-cssnano'),               // Пакет минификации файлов CSS
-      rename       = require('gulp-rename'),                // Переименовывание файлов
+	  rename       = require('gulp-rename'),                // Переименовывание файлов
+      critical     = require('critical').stream,			// Генерирует критические стили для более быстрой загрузки страницы
       uncss	       = require('gulp-uncss'),					// Очищает все неиспользуемые стили
       del          = require('del'),                        // Удаление файлов директории
       imagemin     = require('gulp-imagemin'),              // Пакет минификации изображений (в зависимостях также идут дополнительные пакеты)
@@ -27,9 +28,11 @@ const gulp         = require('gulp'),                       // Сам сборщ
 // Компилируем SASS в CSS (можно изменить на SCSS) и добавляем вендорные префиксы
 gulp.task('sass',  () => {
 	return gulp.src('app/sass/style.sass')  // В этом файле хранятся основные стили, остальные следует импортировать в него
+	.pipe(sourcemaps.init())
 	.pipe(sass({
 		outputStyle: ':nested'
 	}))
+	.pipe(sourcemaps.write())
 	.on('error', notify.onError({
 		title: 'SASS',
 		message: '<%= error.message %>'
@@ -67,6 +70,13 @@ gulp.task('pug',  () => {
     .pipe(pug({
         pretty: true
 	}))
+	.pipe(critical({		// генерируемый критический CSS для быстрой загрузки страниц
+		base:    'app/',
+		minify:  true,
+		inline:  true,
+		width: 1920,
+		height: 1280,
+		css:     ['app/css/style.min.css']}))	// путь к вашему основному файлу стилей, или несколько файлов через звпятую
 	.on('error', notify.onError({
 		title: 'PUG',
 		message: '<%= error.message %>'
