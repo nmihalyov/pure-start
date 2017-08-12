@@ -175,6 +175,11 @@ gulp.task('default', ['css', 'pug', 'jsLibs', 'scripts', 'browser-sync'], () => 
     gulp.watch('app/*.html', browserSync.reload);
 });
 
+// Удаляем все лишние файлы: '.gitkeep', 'changelog.md' и 'readme.md'
+gulp.task('misc', () => {
+    return del.sync(['**/.gitkeep', 'changelog.md', 'readme.md']);
+});
+
 // Очищаем директорию билда 'dist/'
 gulp.task('clean', () => {
     return del.sync('dist/**/*');
