@@ -1,6 +1,6 @@
 # Gulp Pure Start
 
-v0.5.2
+v0.5.1
 
 ![Gulp Pure Start logo](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpWkJ6a09MdnVYdmc)
 
