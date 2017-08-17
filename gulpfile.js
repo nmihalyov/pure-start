@@ -1,5 +1,5 @@
 /* 
- * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov nikita.mihlyov@gmail.com
+ * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov nikita.mihalyov@gmail.com
  * ISC Licensed
  */
 
