@@ -56,6 +56,22 @@ gulp.task('css', ['sass'], () => {
 	}));
 });
 
+// Таск SASS для продакшена, без sourcemap'ов
+gulp.task('_sass',  () => {
+	return gulp.src('app/sass/style.sass')
+	.pipe(sass())
+	.pipe(autoprefixer(['last 15 versions', '> 1%'], {cascade: false}))
+	.pipe(mmq())
+	.pipe(cssnano())
+	.pipe(rename({
+		suffix: '.min'
+	}))
+	.pipe(uncss({
+		html: ['app/*.html']
+	}))
+	.pipe(gulp.dest('dist/css'));
+});
+
 // Чистим неиспользуемые стили
 gulp.task('uncss', () => {
 	return gulp.src('app/css/*.min.css')		// все файлы стилей
@@ -127,6 +143,21 @@ gulp.task('scripts', ['eslint'], () => {
     }));
 });
 
+// Таск scripts для продакшена, без sourcemap'ов
+gulp.task('_scripts', ['eslint'], () => {
+	return gulp.src('app/js/common.js')
+    .pipe(importFile({
+        prefix: '@@',
+        basepath: '@file'
+    }))
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(rename({
+        suffix: '.min'
+    }))
+    .pipe(gulp.dest('dist/js'))
+});
+
 // Подключаем JS файлы бибилотек из директории 'app/libs/', установленные bower'ом, конкатенируем их и минифицируем
 gulp.task('jsLibs', () => {
 	return gulp.src('app/js/libs.js')			// файл, в который импортируются наши библиотеки
@@ -195,22 +226,16 @@ gulp.task('clear', () => {
 
 
 // Собираем наш билд в директорию 'dist/'
-gulp.task('build', ['clean', 'img', 'css', 'pug', 'scripts', 'eslint'], () => {
-
-    // Собираем CSS
-    var buildCss = gulp.src('app/css/style.min.css')
-    .pipe(gulp.dest('dist/css'));
-
-    // Собираем шрифты
-    var buildFonts = gulp.src('app/fonts/**/*')
-    .pipe(gulp.dest('dist/fonts'));
-
-    // Собираем JS
-    var buildJs = gulp.src('app/js/*.min.js')
-    .pipe(gulp.dest('dist/js'));
-
+gulp.task('build', ['clean', 'img', '_sass', 'pug', 'jsLibs', '_scripts'], () => {
     // Собираем HTML
     var buildHtml = gulp.src('app/*.html')
     .pipe(gulp.dest('dist'));
 
+    // Собираем JS-библиотеки
+    var buildJs = gulp.src('app/js/libs.min.js')
+    .pipe(gulp.dest('dist/js'));
+
+    // Собираем шрифты
+    var buildFonts = gulp.src('app/fonts/**/*')
+    .pipe(gulp.dest('dist/fonts'));
 });

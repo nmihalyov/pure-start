@@ -1,1 +1,1 @@
-// @@include('partials/_file.js')
+// @@include('assets/_file.js')
