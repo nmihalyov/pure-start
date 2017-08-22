@@ -178,21 +178,21 @@ gulp.task('jsLibs', () => {
 
 // Минифицируем изображения и кидаем их в кэш
 gulp.task('img', () => {
-    return gulp.src('app/img/**/*')              // путь ко всем изображениям
-    .pipe(cache(imagemin([                       // сжатие изображений без потери качества
-        imagemin.gifsicle(),                     // сжатие gif
-        imagemin.jpegtran(),                     // сжатие jpeg
-        imagemin.optipng()])))                   // сжатие png
-    .pipe(gulp.dest('dist/img'));                // путь вывода файлов
+    return gulp.src('app/img/**/*')             // путь ко всем изображениям
+    .pipe(cache(imagemin([                      // сжатие изображений без потери качества
+        imagemin.gifsicle(),                    // сжатие gif
+        imagemin.jpegtran(),                    // сжатие jpeg
+        imagemin.optipng()])))                  // сжатие png
+    .pipe(gulp.dest('dist/img'));               // путь вывода файлов
 });
 
 // Запускаем наш локальный сервер из директории 'app/'
 gulp.task('browser-sync', () => {
     browserSync({
         server: {
-            baseDir: 'app'                       // корневая папка для запускаемого проекта
+            baseDir: 'app'                      // корневая папка для запускаемого проекта
         },
-        notify: false                            // отключаем стандартные уведомления browsersync
+        notify: false                           // отключаем стандартные уведомления browsersync
     });
 });
 
