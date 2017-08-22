@@ -1,1 +1,5 @@
-// @@include('assets/_file.js')
+window.onload = () => {
+
+	// @@include('assets/_file.js');
+
+}
