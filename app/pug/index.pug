@@ -1,10 +1,7 @@
 doctype
-html
-    head
-        title Document
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1")
-        link(href="css/style.min.css", rel="stylesheet")
-    body
-        script(src="js/libs.min.js")
-        script(src="js/common.min.js")
+html(lang="ru")
+	head
+		include components/_metas.pug
+		include components/_links.pug
+	body
+		include components/_scripts.pug

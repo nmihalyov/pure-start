@@ -1,5 +1,5 @@
 window.onload = () => {
 
-	// @@include('assets/_file.js');
+	@@include('assets/_serviceWorker.js');
 
 }

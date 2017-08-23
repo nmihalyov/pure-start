@@ -24,7 +24,8 @@ const gulp         = require('gulp'),                       // Сам сборщ
       plumber      = require('gulp-plumber'),               // Предотвращает разрыв pipe'ов, вызванных ошибками gulp-плагинов
       notify       = require('gulp-notify'),                // Выводит уведомления
       eslint       = require('gulp-eslint'),                // Линтинг JS-кода
-      importFile   = require('gulp-file-include');          // Импорт файлов (@@include('path/to/file'))
+      importFile   = require('gulp-file-include'),          // Импорт файлов (@@include('path/to/file'))
+      swPrecache   = require('sw-precache');                // Service Worker Precache
 
 // Компилируем SASS (можно изменить на SCSS) в CSS с минификацией и добавляем вендорные префиксы
 gulp.task('sass',  () => {
@@ -196,12 +197,28 @@ gulp.task('browser-sync', () => {
     });
 });
 
+// Создаём Service Worker для нашшего приложения
+gulp.task('service-worker', callback => {
+    swPrecache.write('app/service-worker.js', { // генерируем наш Service Worker
+        staticFileGlobs: [                      // массив файлов, которые надо кжшировать
+            'app/manifest.json',
+            'app/**/*.html',
+            'app/css/*.min.css', 
+            'app/fonts/**/*', 
+            'app/img/**/*', 
+            'app/js/*.min.js'
+        ],
+        stripPrefix: 'app/'                     // корневая папка, которая убирается из пути Service Worker'а, т.к. на сервере этой папки не будет
+    }, callback);
+});
+
 // Следим за изменениями файлов и вывполняем соответствующие таски
-gulp.task('default', ['sass', 'img', 'pug', 'jsLibs', 'scripts', 'browser-sync'], () => {
-    gulp.watch('app/sass/**/*.sass', ['sass']);
-    gulp.watch('app/pug/**/*.pug', ['pug']);
-    gulp.watch(['app/js/common.js', 'app/js/assets/*.js'], ['scripts']);
-    gulp.watch('app/js/libs.js', ['jsLibs']);
+gulp.task('default', ['css', 'img', 'pug', 'jsLibs', 'scripts', 'service-worker', 'browser-sync'], () => {
+    gulp.watch('app/sass/**/*.sass', ['css', 'service-worker']);
+    gulp.watch('app/pug/**/*.pug', ['pug', 'service-worker']);
+    gulp.watch(['app/js/common.js', 'app/js/assets/*.js'], ['scripts', 'service-worker']);
+    gulp.watch('app/js/libs.js', ['jsLibs', 'service-worker']);
+    gulp.watch('app/manifest.json', ['service-worker']);
 });
 
 // Удаляем все лишние файлы: '.gitkeep', 'changelog.md' и 'readme.md'
@@ -221,16 +238,20 @@ gulp.task('clear', () => {
 
 
 // Собираем наш билд в директорию 'dist/'
-gulp.task('build', ['clean', 'img', '_sass', 'pug', 'jsLibs', '_scripts'], () => {
+gulp.task('build', ['clean', 'img', '_sass', 'pug', 'jsLibs', '_scripts', 'service-worker'], () => {
     // Собираем HTML
-    var buildHtml = gulp.src('app/*.html')
+    let buildHtml = gulp.src('app/*.html')
     .pipe(gulp.dest('dist'));
 
     // Собираем JS-библиотеки
-    var buildJs = gulp.src('app/js/libs.min.js')
+    let buildJs = gulp.src('app/js/libs.min.js')
     .pipe(gulp.dest('dist/js'));
 
     // Собираем шрифты
-    var buildFonts = gulp.src('app/fonts/**/*')
+    let buildFonts = gulp.src('app/fonts/**/*')
     .pipe(gulp.dest('dist/fonts'));
+
+    // Собираем Service Worker и Manifest
+    let buildPWA = gulp.src(['app/service-worker.js', 'app/manifest.json'])
+    .pipe(gulp.dest('dist/'));
 });
