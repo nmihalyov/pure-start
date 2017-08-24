@@ -213,8 +213,8 @@ gulp.task('service-worker', callback => {
 });
 
 // Следим за изменениями файлов и вывполняем соответствующие таски
-gulp.task('default', ['css', 'img', 'pug', 'jsLibs', 'scripts', 'service-worker', 'browser-sync'], () => {
-    gulp.watch('app/sass/**/*.sass', ['css', 'service-worker']);
+gulp.task('default', ['sass', 'img', 'pug', 'jsLibs', 'scripts', 'service-worker', 'browser-sync'], () => {
+    gulp.watch('app/sass/**/*.sass', ['sass', 'service-worker']);
     gulp.watch('app/pug/**/*.pug', ['pug', 'service-worker']);
     gulp.watch(['app/js/common.js', 'app/js/assets/*.js'], ['scripts', 'service-worker']);
     gulp.watch('app/js/libs.js', ['jsLibs', 'service-worker']);
