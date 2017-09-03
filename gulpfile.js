@@ -199,7 +199,7 @@ gulp.task('browser-sync', () => {
 
 // Создаём Service Worker для нашшего приложения
 gulp.task('service-worker', callback => {
-    swPrecache.write('app/service-worker.js', { // генерируем наш Service Worker
+    swPrecache.write('dist/service-worker.js', { // генерируем наш Service Worker
         staticFileGlobs: [                      // массив файлов, которые надо кжшировать
             'app/manifest.json',
             'app/**/*.html',
