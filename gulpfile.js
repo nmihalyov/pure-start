@@ -1,5 +1,5 @@
 /* 
- * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov nikita.mihalyov@gmail.com
+ * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
  */
 
@@ -83,6 +83,22 @@ gulp.task('pug',  () => {
     .pipe(pug({
         pretty: true                            // компилируем pug в html без сжатия
     }))
+    .on('error', notify.onError({
+        title: 'PUG',
+        message: '<%= error.message %>'         // выводим сообщение об ошибке
+    }))
+    .pipe(gulp.dest('app'))                     // путь вывода html файла(-ов)
+    .pipe(browserSync.reload({
+        stream: true                            // перезагружаем страницу
+    }));
+});
+
+// Таск PUG для продакшена - генерация критических стилей
+gulp.task('_pug',  () => {
+    return gulp.src('app/pug/*.pug')
+    .pipe(pug({
+        pretty: true
+    }))
     .pipe(critical({                            // генерируем критический CSS для быстрой загрузки страниц
         base:    'app/',                        // из всех наших файлов в директории app
         minify:  true,                          // с минификацией
@@ -92,12 +108,9 @@ gulp.task('pug',  () => {
         css:     ['app/css/style.min.css']}))   // путь к вашему основному файлу стилей, или несколько файлов через звпятую
     .on('error', notify.onError({
         title: 'PUG',
-        message: '<%= error.message %>'         // выводим сообщение об ошибке
+        message: '<%= error.message %>'
     }))
-    .pipe(gulp.dest('app'))                     // путь вывода html файла(-ов)
-    .pipe(browserSync.reload({
-        stream: true                            // перезагружаем страницу
-    }));
+    .pipe(gulp.dest('dist'));
 });
 
 // Линтинг JS-кода
@@ -198,8 +211,8 @@ gulp.task('browser-sync', () => {
 });
 
 // Создаём Service Worker для нашшего приложения
-gulp.task('service-worker', callback => {
-    swPrecache.write('dist/service-worker.js', { // генерируем наш Service Worker
+gulp.task('service-worker', () => {
+    swPrecache.write('dist/service-worker.js', {// генерируем наш Service Worker
         staticFileGlobs: [                      // массив файлов, которые надо кжшировать
             'app/manifest.json',
             'app/**/*.html',
@@ -209,16 +222,15 @@ gulp.task('service-worker', callback => {
             'app/js/*.min.js'
         ],
         stripPrefix: 'app/'                     // корневая папка, которая убирается из пути Service Worker'а, т.к. на сервере этой папки не будет
-    }, callback);
+    });
 });
 
 // Следим за изменениями файлов и вывполняем соответствующие таски
-gulp.task('default', ['sass', 'img', 'pug', 'jsLibs', 'scripts', 'service-worker', 'browser-sync'], () => {
-    gulp.watch('app/sass/**/*.sass', ['sass', 'service-worker']);
-    gulp.watch('app/pug/**/*.pug', ['pug', 'service-worker']);
-    gulp.watch(['app/js/common.js', 'app/js/assets/*.js'], ['scripts', 'service-worker']);
-    gulp.watch('app/js/libs.js', ['jsLibs', 'service-worker']);
-    gulp.watch('app/manifest.json', ['service-worker']);
+gulp.task('default', ['sass', 'img', 'pug', 'jsLibs', 'scripts', 'browser-sync'], () => {
+    gulp.watch('app/sass/**/*.sass', ['sass']);
+    gulp.watch('app/pug/**/*.pug', ['pug']);
+    gulp.watch(['app/js/common.js', 'app/js/assets/*.js'], ['scripts']);
+    gulp.watch('app/js/libs.js', ['jsLibs']);
 });
 
 // Удаляем все лишние файлы: '.gitkeep', 'changelog.md' и 'readme.md'
@@ -238,11 +250,7 @@ gulp.task('clear', () => {
 
 
 // Собираем наш билд в директорию 'dist/'
-gulp.task('build', ['clean', 'img', '_sass', 'pug', 'jsLibs', '_scripts', 'service-worker'], () => {
-    // Собираем HTML
-    let buildHtml = gulp.src('app/*.html')
-    .pipe(gulp.dest('dist'));
-
+gulp.task('build', ['clean', 'img', '_sass', '_pug', 'jsLibs', '_scripts', 'service-worker'], () => {
     // Собираем JS-библиотеки
     let buildJs = gulp.src('app/js/libs.min.js')
     .pipe(gulp.dest('dist/js'));
@@ -251,7 +259,7 @@ gulp.task('build', ['clean', 'img', '_sass', 'pug', 'jsLibs', '_scripts', 'servi
     let buildFonts = gulp.src('app/fonts/**/*')
     .pipe(gulp.dest('dist/fonts'));
 
-    // Собираем Service Worker и Manifest
-    let buildPWA = gulp.src(['app/service-worker.js', 'app/manifest.json'])
+    // Собираем manifest.json
+    let buildManifest = gulp.src('app/manifest.json')
     .pipe(gulp.dest('dist/'));
 });

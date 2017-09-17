@@ -1,6 +1,6 @@
 {
 	"name": "gulp-pure-start",
-	"version": "0.6.4",
+	"version": "0.6.5",
 	"description": "Start your project with 'Gulp Pure Start' easily then ever!",
 	"main": "gulpfile.js",
 	"scripts": {
@@ -11,7 +11,7 @@
 		"pure",
 		"start"
 	],
-	"author": "Nikita Mihalyov",
+	"author": "Nikita Mihalyov <nikita.mihalyov@gmail.com>",
 	"license": "ISC",
 	"devDependencies": {
 		"babel-preset-es2015": "^6.24.1",
