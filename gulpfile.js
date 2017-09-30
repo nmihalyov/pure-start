@@ -1,7 +1,7 @@
 /* 
  * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v0.7.0
+ * v0.7.1
  */
 
 let dev = './dev',     // рабочая папка проекта
@@ -20,7 +20,6 @@ const gulp         = require('gulp'),                       // Сам сборщ
       cssnano      = require('gulp-cssnano'),               // Пакет минификации файлов CSS
       rename       = require('gulp-rename'),                // Переименовывание файлов
       critical     = require('critical').stream,            // Генерирует критические стили для более быстрой загрузки страницы
-      uncss        = require('gulp-uncss'),                 // Очищает все неиспользуемые стили
       del          = require('del'),                        // Удаление файлов директории
       imagemin     = require('gulp-imagemin'),              // Пакет минификации изображений (в зависимостях также идут дополнительные пакеты)
       cache        = require('gulp-cache'),                 // Работа с кэшом
@@ -66,19 +65,7 @@ gulp.task('_sass',  () => {
     .pipe(rename({
         suffix: '.min'
     }))
-    .pipe(uncss({
-        html: [`${dev}/*.html`]
-    }))
     .pipe(gulp.dest(`${prod}/css`));
-});
-
-// Чистим неиспользуемые стили
-gulp.task('uncss', () => {
-    return gulp.src(`${dev}/css/*.min.css`)     // все файлы стилей
-    .pipe(uncss({
-        html: [`${dev}/*.html`]                 // убираем неиспользуемые стили
-    }))
-    .pipe(gulp.dest(`${dev}/css`));             // путь вывода файлов
 });
 
 // Компилируем Pug (Jade) в HTML без его минификации

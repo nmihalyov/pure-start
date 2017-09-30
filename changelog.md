@@ -57,3 +57,5 @@
 0.6.6 - Исправление ошибок `changelog.md`
 
 0.7.0 - Переработана структура проекта. Переход на компонентый подход ([подробнее](https://github.com/nmihalyov/gulp-pure-start/blob/master/readme.md#Структура))
+
+0.7.1 - Удалён таск `uncss`, вызывающий проблемы при сборке проекта в production build
