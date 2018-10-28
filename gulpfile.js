@@ -1,7 +1,7 @@
 /* 
  * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v0.7.1
+ * v0.7.2
  */
 
 let dev = './dev',     // рабочая папка проекта
@@ -27,8 +27,7 @@ const gulp         = require('gulp'),                       // Сам сборщ
       plumber      = require('gulp-plumber'),               // Предотвращает разрыв pipe'ов, вызванных ошибками gulp-плагинов
       notify       = require('gulp-notify'),                // Выводит уведомления
       eslint       = require('gulp-eslint'),                // Линтинг JS-кода
-      importFile   = require('gulp-file-include'),          // Импорт файлов (@@include('path/to/file'))
-      swPrecache   = require('sw-precache');                // Service Worker Precache
+      importFile   = require('gulp-file-include');          // Импорт файлов (@@include('path/to/file'))
 
 // Компилируем SASS (можно изменить на SCSS) в CSS с минификацией и добавляем вендорные префиксы
 gulp.task('sass',  () => {
@@ -201,21 +200,6 @@ gulp.task('browser-sync', () => {
     });
 });
 
-// Создаём Service Worker для нашшего приложения
-gulp.task('service-worker', () => {
-    swPrecache.write(`${prod}/service-worker.js`, {// генерируем наш Service Worker
-        staticFileGlobs: [                      // массив файлов, которые надо кжшировать
-            `${dev}/manifest.json`,
-            `${dev}/**/*.html`,
-            `${dev}/css/*.min.css`,
-            `${dev}/fonts/**/*`, 
-            `${dev}/img/**/*`, 
-            `${dev}/js/*.min.js`
-        ],
-        stripPrefix: `${dev}`                   // корневая папка, которая убирается из пути Service Worker'а, т.к. на сервере этой папки не будет
-    });
-});
-
 // Следим за изменениями файлов и вывполняем соответствующие таски
 gulp.task('default', ['sass', 'img', 'pug', 'jsLibs', 'scripts', 'browser-sync'], () => {
     // стили
@@ -245,7 +229,7 @@ gulp.task('clear', () => {
 
 
 // Собираем наш билд
-gulp.task('build', ['clean', 'img', '_sass', '_pug', 'jsLibs', '_scripts', 'service-worker'], () => {
+gulp.task('build', ['clean', 'img', '_sass', '_pug', 'jsLibs', '_scripts'], () => {
     // Собираем JS-библиотеки
     let buildJs = gulp.src(`${dev}/js/libs.min.js`)
     .pipe(gulp.dest(`${prod}/js`));
