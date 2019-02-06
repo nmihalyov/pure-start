@@ -1,7 +1,21 @@
 {
+	"parser": "esprima",
     "extends": "standard",
     "plugins": [
         "standard",
         "promise"
-    ]
+	],
+	"env": {
+		"browser": true,
+		"es6": true,
+		"jquery": true
+	},
+	"rules": {
+		"semi": 0,
+		"one-var": 0,
+		"indent": ["warn", "tab"],
+		"no-tabs": 0,
+		"no-undef": 0,
+		"no-multi-spaces": 0
+	}
 }
