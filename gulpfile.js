@@ -1,13 +1,14 @@
 /*
  * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v0.8.0
+ * v0.9.9
  */
 
 'use strict';
 
-let dev = './dev',     // рабочая папка проекта
-	prod = './prod';   // папка готового билда проекта
+let dev = './dev',     // рабочая среда проекта
+	build = './build', // рабочий билд
+	prod = './prod';   // билд в продакшен
 
 // Подключаем все необходимые плагины
 const gulp       = require('gulp'),                       // Сам сборщик Gulp
@@ -42,14 +43,13 @@ gulp.task('sass', () => {
 		message: '<%= error.message %>'         // вывод сообщения об ошибке
 	}))
 	.pipe(autoprefixer(['last 15 versions', '> 1%'], {cascade: false}))    // настройка автоматической подстановки вендорных префиксов
-	.pipe(gulp.dest(`${dev}/css`))              // путь вывода файла(-ов)
 	.pipe(mmq())                                // собираем все медиа запросы
 	.pipe(cssnano())                            // минификация стилей
 	.pipe(rename({
 		suffix: '.min'                          // переименовываем минифицированный(-ые) файл(-ы) стилей
 	}))
 	.pipe(sourcemaps.write())                   // запись sourcemap'ов
-	.pipe(gulp.dest(`${dev}/css`))              // путь вывода файла(-ов)
+	.pipe(gulp.dest(`${build}/css`))            // путь вывода файла(-ов)
 	.pipe(browserSync.reload({
 		stream: true                            // инжектим стили без перезагрузки страницы
 	}));
@@ -78,7 +78,7 @@ gulp.task('pug',  () => {
 		title: 'PUG',
 		message: '<%= error.message %>'         // выводим сообщение об ошибке
 	}))
-	.pipe(gulp.dest(`${dev}`))                  // путь вывода html файла(-ов)
+	.pipe(gulp.dest(`${build}`))                // путь вывода html файла(-ов)
 	.pipe(browserSync.reload({
 		stream: true                            // перезагружаем страницу
 	}));
@@ -91,12 +91,12 @@ gulp.task('_pug',  () => {
 		pretty: true
 	}))
 	.pipe(critical({                            // генерируем критический CSS для быстрой загрузки страниц
-		base: `${dev}/`,                        // из всех наших файлов
+		base: `${build}/`,                      // из всех наших файлов
 		minify: true,                           // с минификацией
 		inline: true,
 		width: 1920,
 		height: 1280,
-		css: [`${dev}/css/style.min.css`]       // путь к вашему основному файлу стилей, или несколько файлов через звпятую
+		css: [`${build}/css/style.min.css`]     // путь к вашему основному файлу стилей, или несколько файлов через звпятую
 	}))
 	.on('error', notify.onError({
 		title: 'PUG',
@@ -107,7 +107,7 @@ gulp.task('_pug',  () => {
 
 // Линтинг JS-кода
 gulp.task('eslint', () => {
-	return gulp.src([`${dev}/js/common.js`, `${dev}/assets/*.js`])    // все JS файлы
+	return gulp.src([`${dev}/components/**/*.js`, `${dev}/assets/*.js`])    // все JS файлы
 	.pipe(eslint({
 		fix: true                      			// определяем глобальные переменные (самое распространённое - jQuery)
 	}))
@@ -115,11 +115,11 @@ gulp.task('eslint', () => {
 });
 
 // Подключаем JS файлы результирующего файла common.js, конкатенируем и минифицируем
-gulp.task('scripts', ['eslint'], () => {
+gulp.task('scripts', gulp.parallel('eslint', () => {
 	return gulp.src(`${dev}/js/common.js`)      // основной(-ые) файл(-ы) наших сценариев
 	.pipe(plumber({
 		errorHandler: notify.onError({
-			title: 'JS',
+			title: 'JavaScript',
 			message: '<%= error.message %>'     // выводим сообщение об ошибке
 		})
 	}))
@@ -134,14 +134,14 @@ gulp.task('scripts', ['eslint'], () => {
 		suffix: '.min'                          // переименовываем сжатый файл
 	}))
 	.pipe(sourcemaps.write())                   // запись sourcemap'ов
-	.pipe(gulp.dest(`${dev}/js`))               // путь вывода файлов
+	.pipe(gulp.dest(`${build}/js`))             // путь вывода файлов
 	.pipe(browserSync.reload({
 		stream: true                            // перезагружаем страницу
 	}));
-});
+}));
 
 // Таск scripts для продакшена, без sourcemap'ов
-gulp.task('_scripts', ['eslint'], () => {
+gulp.task('_scripts', gulp.parallel('eslint', () => {
 	return gulp.src(`${dev}/js/common.js`)
 	.pipe(importFile({
 		prefix: '@@',
@@ -153,14 +153,14 @@ gulp.task('_scripts', ['eslint'], () => {
 		suffix: '.min'
 	}))
 	.pipe(gulp.dest(`${prod}/js`))
-});
+}));
 
 // Подключаем JS файлы бибилотек, установленные bower'ом, конкатенируем их и минифицируем
 gulp.task('jsLibs', () => {
 	return gulp.src(`${dev}/js/libs.js`)        // файл, в который импортируются наши библиотеки
 	.pipe(plumber({
 		errorHandler: notify.onError({
-			title: 'JS',
+			title: 'JavaScript',
 			message: '<%= error.message %>'     // выводим сообщение об ошибке
 		})
 	}))
@@ -172,7 +172,7 @@ gulp.task('jsLibs', () => {
 	.pipe(rename({
 		suffix: '.min'                          // переименовываем сжатый файл
 	}))
-	.pipe(gulp.dest(`${dev}/js`))               // путь вывода файлов
+	.pipe(gulp.dest(`${build}/js`))             // путь вывода файлов
 	.pipe(browserSync.reload({
 		stream: true                            // перезагружаем страницу
 	}));
@@ -185,57 +185,61 @@ gulp.task('img', () => {
 		imagemin.gifsicle(),                    // сжатие gif
 		imagemin.jpegtran(),                    // сжатие jpeg
 		imagemin.optipng()])))                  // сжатие png
-	.pipe(gulp.dest(`${prod}/img`));            // путь вывода файлов
+	.pipe(gulp.dest(`${build}/img`));           // путь вывода файлов
 });
 
 // Запускаем наш локальный сервер
 gulp.task('browser-sync', () => {
 	browserSync({
 		server: {
-			baseDir: `${dev}`                   // корневая папка для запускаемого проекта
+			baseDir: `${build}`                 // корневая папка для запускаемого проекта
 		},
 		notify: false                           // отключаем стандартные уведомления browsersync
 	});
 });
 
 // Следим за изменениями файлов и вывполняем соответствующие таски
-gulp.task('default', ['sass', 'img', 'pug', 'jsLibs', 'scripts', 'browser-sync'], () => {
+gulp.task('default', gulp.parallel('sass', 'img', 'pug', 'jsLibs', 'scripts', 'browser-sync', () => {
 	// стили
-	gulp.watch([`${dev}/**/*.sass`], ['sass']);
+	gulp.watch(`${dev}/**/*.sass`, gulp.series('sass'));
 	// разметка
-	gulp.watch([`${dev}/**/*.pug`], ['pug']);
+	gulp.watch(`${dev}/**/*.pug`, gulp.series('pug'));
 	// скрипты
-	gulp.watch([`${dev}/**/*.js`], ['scripts']);
+	gulp.watch(`${dev}/**/*.js`, gulp.series('scripts'));
 	// скрипты библиотек
-	gulp.watch(`${dev}/js/libs.js`, ['jsLibs']);
-});
+	gulp.watch(`${dev}/js/libs.js`, gulp.series('jsLibs'));
+}));
 
 // Удаляем все лишние файлы: '.gitkeep', 'changelog.md' и 'readme.md'
-gulp.task('misc', () => {
+gulp.task('misc', async () => {
 	return del.sync(['**/.gitkeep', 'changelog.md', 'readme.md']);
 });
 
-// Очищаем директорию билда
-gulp.task('clean', () => {
+// Очищаем директорию продакшен билда
+gulp.task('clean', async () => {
 	return del.sync(`${prod}/**/*`);
 });
 
 // Чистим кэш изображений (вообще весь кэш)
-gulp.task('clear', () => {
+gulp.task('clear', async () => {
 	return cache.clearAll();
 });
 
-// Собираем наш билд
-gulp.task('build', ['clean', 'img', '_sass', '_pug', 'jsLibs', '_scripts'], () => {
+// Собираем наш билд в продакшен
+gulp.task('build', gulp.series('clean', 'img', '_sass', '_pug', 'jsLibs', '_scripts', async () => {
 	// Собираем JS-библиотеки
-	let buildJs = gulp.src(`${dev}/js/libs.min.js`)
+	let buildJs = gulp.src(`${build}/js/libs.min.js`)
 	.pipe(gulp.dest(`${prod}/js`));
 
 	// Собираем шрифты
 	let buildFonts = gulp.src(`${dev}/fonts/**/*`)
 	.pipe(gulp.dest(`${prod}/fonts`));
 
+	// Собираем изображения
+	let buildImages = gulp.src(`${build}/img/**/*`)
+	.pipe(gulp.dest(`${build}/img`));
+
 	// Собираем manifest.json
 	let buildManifest = gulp.src(`${dev}/manifest.json`)
 	.pipe(gulp.dest(`${prod}/`));
-});
+}));

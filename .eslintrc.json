@@ -16,6 +16,7 @@
 		"indent": ["warn", "tab"],
 		"no-tabs": 0,
 		"no-undef": 0,
-		"no-multi-spaces": 0
+		"no-multi-spaces": 0,
+		"eol-last": 0
 	}
 }
