@@ -1,7 +1,7 @@
 /*
  * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v0.9.9
+ * v0.9.1
  */
 
 'use strict';
@@ -109,7 +109,7 @@ gulp.task('_pug',  () => {
 gulp.task('eslint', () => {
 	return gulp.src([`${dev}/components/**/*.js`, `${dev}/assets/*.js`])    // все JS файлы
 	.pipe(eslint({
-		fix: true                      			// определяем глобальные переменные (самое распространённое - jQuery)
+		fix: true
 	}))
 	.pipe(eslint.format());                     // выводит сообщения ESLint'а в консоль
 });

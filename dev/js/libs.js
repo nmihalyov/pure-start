@@ -1,1 +1,1 @@
-// @@include('../libs/your_lib/your_lib.js')
+// @@include('../../node_modules/your_lib/your_lib.js')

@@ -1,6 +1,6 @@
 {
 	"name": "gulp-pure-start",
-	"version": "0.9.0",
+	"version": "0.9.1",
 	"description": "Start your project with 'Gulp Pure Start' easily then ever!",
 	"main": "gulpfile.js",
 	"keywords": [
@@ -39,7 +39,6 @@
 		"gulp-uglify": "^3.0.0",
 		"imagemin-gifsicle": "^6.0.1",
 		"imagemin-jpegtran": "^6.0.0",
-		"imagemin-optipng": "^6.0.0",
-		"sw-precache": "^5.2.0"
+		"imagemin-optipng": "^6.0.0"
 	}
 }
