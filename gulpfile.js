@@ -1,7 +1,7 @@
 /*
- * Gulp Pure Start (GPS) Copyright © 2017, Nikita Mihalyov <nikita.mihalyov@gmail.com>
+ * Gulp Pure Start © 2017 – 2019, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v0.9.1
+ * v1.0.0
  */
 
 'use strict';
@@ -188,6 +188,12 @@ gulp.task('img', () => {
 	.pipe(gulp.dest(`${build}/img`));           // путь вывода файлов
 });
 
+// Переносим шрифты
+gulp.task('fonts', () => {
+	return gulp.src(`${dev}/fonts/**/*`)
+	.pipe(gulp.dest(`${build}/fonts`));
+});
+
 // Запускаем наш локальный сервер
 gulp.task('browser-sync', () => {
 	browserSync({
@@ -199,7 +205,7 @@ gulp.task('browser-sync', () => {
 });
 
 // Следим за изменениями файлов и вывполняем соответствующие таски
-gulp.task('default', gulp.parallel('sass', 'img', 'pug', 'jsLibs', 'scripts', 'browser-sync', () => {
+gulp.task('default', gulp.parallel('sass', 'img', 'pug', 'jsLibs', 'scripts', 'fonts', 'browser-sync', () => {
 	// стили
 	gulp.watch(`${dev}/**/*.sass`, gulp.series('sass'));
 	// разметка
@@ -208,6 +214,10 @@ gulp.task('default', gulp.parallel('sass', 'img', 'pug', 'jsLibs', 'scripts', 'b
 	gulp.watch(`${dev}/**/*.js`, gulp.series('scripts'));
 	// скрипты библиотек
 	gulp.watch(`${dev}/js/libs.js`, gulp.series('jsLibs'));
+	// шрифты
+	gulp.watch(`${dev}/fonts/**/*`, gulp.series('fonts'));
+	// изображения
+	gulp.watch(`${dev}/img/**/*`, gulp.series('img'));
 }));
 
 // Удаляем все лишние файлы: '.gitkeep', 'changelog.md' и 'readme.md'
@@ -226,9 +236,9 @@ gulp.task('clear', async () => {
 });
 
 // Собираем наш билд в продакшен
-gulp.task('build', gulp.series('clean', 'img', '_sass', '_pug', 'jsLibs', '_scripts', async () => {
+gulp.task('prod', gulp.series('clean', 'img', '_sass', '_pug', 'jsLibs', '_scripts', async () => {
 	// Собираем JS-библиотеки
-	let buildJs = gulp.src(`${build}/js/libs.min.js`)
+	let buildJsLibs = gulp.src(`${build}/js/libs.min.js`)
 	.pipe(gulp.dest(`${prod}/js`));
 
 	// Собираем шрифты
@@ -237,7 +247,7 @@ gulp.task('build', gulp.series('clean', 'img', '_sass', '_pug', 'jsLibs', '_scri
 
 	// Собираем изображения
 	let buildImages = gulp.src(`${build}/img/**/*`)
-	.pipe(gulp.dest(`${build}/img`));
+	.pipe(gulp.dest(`${prod}/img`));
 
 	// Собираем manifest.json
 	let buildManifest = gulp.src(`${dev}/manifest.json`)

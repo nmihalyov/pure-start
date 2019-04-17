@@ -1,6 +1,6 @@
 {
 	"name": "gulp-pure-start",
-	"version": "0.9.1",
+	"version": "1.0.0",
 	"description": "Start your project with 'Gulp Pure Start' easily then ever!",
 	"main": "gulpfile.js",
 	"keywords": [

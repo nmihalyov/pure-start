@@ -1,5 +1,5 @@
 {
-	"parser": "esprima",
+	"parser": "babel-eslint",
     "extends": "standard",
     "plugins": [
         "standard",

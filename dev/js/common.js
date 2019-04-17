@@ -1,5 +1,5 @@
 window.onload = () => {
 
-	// @@include('../components/component/component.js')
+	@@include('../components/component/component.js')
 
 }
