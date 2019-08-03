@@ -1,5 +1,11 @@
 include _og
 
+//- константы для OpenGraph
+-const TITLE = ""
+-const URL = ""
+-const IMAGE = ""
+-const DESCRIPTION = ""
+
 //- Кодировка
 meta(charset="UTF-8")
 
@@ -30,4 +36,4 @@ meta(name="msapplication-TileColor", content="#000000")
 //- Отключение отображения номера как ссылки
 meta(name="format-detection", content="telephone=no")
 
-+open-graph(title, url, image, description)
++open-graph(TITLE, URL, IMAGE, DESCRIPTION)

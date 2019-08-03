@@ -1,0 +1,35 @@
+body
+	font:
+		family: 'Proxima Nova', Helvetica, sans-serif
+		size: 18px
+		weight: 300
+
+p
+	margin: 0
+
+h1, h2, h3, h4, h5, h6
+	margin: 0
+
+.container
+	width: 100%
+	.wrapper
+		max-width: 1200px
+		width: 100%
+		margin: 0 auto
+		padding: 0 30px
+
+@media only screen and (max-width: $tablet)
+	body
+		font-size: 16px
+	.container
+		.wrapper
+			max-width: 768px
+			padding: 0 20px
+
+@media only screen and (max-width: $mobile)
+	body
+		font-size: 14px
+	.container
+		.wrapper
+			max-width: 320px
+			padding: 0 10px
