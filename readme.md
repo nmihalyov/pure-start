@@ -1,6 +1,6 @@
 # Gulp Pure Start
 
-v1.1.0
+v1.2.0
 ![Gulp Pure Start logo](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpWkJ6a09MdnVYdmc)
 
 **Gulp Pure Start** позволяет легко и быстро начать работу над проектом с использованием сборщика Gulp.

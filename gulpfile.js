@@ -1,7 +1,7 @@
 /*
  * Gulp Pure Start © 2017 – 2019, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v1.1.0
+ * v1.2.0
  */
 
 'use strict';
@@ -204,8 +204,14 @@ gulp.task('browser-sync', () => {
 	});
 });
 
+// Переносим файл манифеста в папку build
+gulp.task('manifest', () => {
+	return gulp.src(`${dev}/manifest.json`)
+	.pipe(gulp.dest(`${build}/`));
+});
+
 // Следим за изменениями файлов и вывполняем соответствующие таски
-gulp.task('default', gulp.parallel('sass', 'img', 'pug', 'jsLibs', 'scripts', 'fonts', 'browser-sync', () => {
+gulp.task('default', gulp.parallel('sass', 'img', 'pug', 'jsLibs', 'scripts', 'fonts', 'manifest', 'browser-sync', () => {
 	// стили
 	gulp.watch(`${dev}/**/*.sass`, gulp.series('sass'));
 	// разметка
@@ -218,6 +224,8 @@ gulp.task('default', gulp.parallel('sass', 'img', 'pug', 'jsLibs', 'scripts', 'f
 	gulp.watch(`${dev}/fonts/**/*`, gulp.series('fonts'));
 	// изображения
 	gulp.watch(`${dev}/img/**/*`, gulp.series('img'));
+	// манифест
+	gulp.watch(`${dev}/manifest.json`, gulp.series('manifest'));
 }));
 
 // Удаляем все лишние файлы: '.gitkeep', 'changelog.md' и 'readme.md'
@@ -238,18 +246,18 @@ gulp.task('clear', async () => {
 // Собираем наш билд в продакшен
 gulp.task('prod', gulp.series('clean', 'img', '_sass', '_pug', 'jsLibs', '_scripts', async () => {
 	// Собираем JS-библиотеки
-	let buildJsLibs = gulp.src(`${build}/js/libs.min.js`)
+	gulp.src(`${build}/js/libs.min.js`)
 	.pipe(gulp.dest(`${prod}/js`));
 
 	// Собираем шрифты
-	let buildFonts = gulp.src(`${dev}/fonts/**/*`)
+	gulp.src(`${dev}/fonts/**/*`)
 	.pipe(gulp.dest(`${prod}/fonts`));
 
 	// Собираем изображения
-	let buildImages = gulp.src(`${build}/img/**/*`)
+	gulp.src(`${build}/img/**/*`)
 	.pipe(gulp.dest(`${prod}/img`));
 
 	// Собираем manifest.json
-	let buildManifest = gulp.src(`${dev}/manifest.json`)
+	gulp.src(`${dev}/manifest.json`)
 	.pipe(gulp.dest(`${prod}/`));
 }));
