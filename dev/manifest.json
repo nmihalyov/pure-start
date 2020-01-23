@@ -3,32 +3,32 @@
 	"short_name": "AppName", 	
 	"icons": [
 		{
-			"src": "images/favicons/128x128.png",
+			"src": "img/favicons/128x128.png",
 			"sizes": "128x128",
 			"type": "img/png"
 		},
 		{
-			"src": "images/favicons/144x144.png",
+			"src": "img/favicons/144x144.png",
 			"sizes": "144x144",
 			"type": "img/png"
 		},
 		{
-			"src": "images/favicons/152x152.png",
+			"src": "img/favicons/152x152.png",
 			"sizes": "152x152",
 			"type": "img/png"
 		},
 		{
-			"src": "images/favicons/192x192.png",
+			"src": "img/favicons/192x192.png",
 			"sizes": "192x192",
 			"type": "img/png"
 		},
 		{
-			"src": "images/favicons/256x256.png",
+			"src": "img/favicons/256x256.png",
 			"sizes": "256x256",
 			"type": "img/png"
 		},
 		{
-			"src": "images/favicons/512x512.png",
+			"src": "img/favicons/512x512.png",
 			"sizes": "512x512",
 			"type": "img/png"
 		}
@@ -37,5 +37,5 @@
 	"display": "standalone",
 	"theme_color": "#000000",
 	"background_color": "#000000",
-	"orientation": "portarait-primary"
+	"orientation": "portrait-primary"
 }
