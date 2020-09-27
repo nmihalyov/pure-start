@@ -1,7 +1,7 @@
 /*
  * Gulp Pure Start © 2017 – 2019, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v1.2.1
+ * v1.2.2
  */
 
 'use strict';
@@ -18,7 +18,7 @@ const gulp     = require('gulp'),                       // Сам сборщик
 	browserSync  = require('browser-sync'),               // Запуск локального сервера
 	babel        = require('gulp-babel'),                 // Транспиляция ES6 в ES5
 	sourcemaps   = require('gulp-sourcemaps'),            // Sourcemap'ы к файлам
-	uglify       = require('gulp-uglify'),                // Минификация файлов JavaScript
+	uglify       = require('gulp-uglify-es').default,     // Минификация файлов JavaScript
 	cssnano      = require('gulp-cssnano'),               // Минификация файлов CSS
 	rename       = require('gulp-rename'),                // Переименовывание файлов
 	critical     = require('critical').stream,            // Создание критических стилей

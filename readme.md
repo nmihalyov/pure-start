@@ -1,6 +1,6 @@
 # Gulp Pure Start
 
-v1.2.1
+v1.2.2
 ![Gulp Pure Start logo](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpWkJ6a09MdnVYdmc)
 
 **Gulp Pure Start** позволяет легко и быстро начать работу над проектом с использованием сборщика Gulp.
@@ -31,9 +31,6 @@ v1.2.1
 
 Стуктура проекта предельно проста:
  + В корневой папке:
-   + **.babelrc** — настройка транспилятора ES6
-   + **.bowerrc** — настройка пакетного менеджера Bower
-   + **.eslintrc.json** — настройка ESLint
    + **.gitignore** – запрещает отслеживание директорий/файлов Git'ом
    + **gulpfile.js** — скрипт настроек и тасков для Gulp'а
    + **package.json** — файл содержит информацию о проекте, авторе, а также список зависимостей
