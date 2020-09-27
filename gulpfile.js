@@ -1,7 +1,7 @@
 /*
- * Gulp Pure Start © 2017 – 2019, Nikita Mihalyov <nikita.mihalyov@gmail.com>
+ * Gulp Pure Start © 2017 – 2020, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v1.2.2
+ * v1.2.3
  */
 
 'use strict';
@@ -227,7 +227,7 @@ gulp.task('default', gulp.parallel('sass', 'img', 'pug', 'jsLibs', 'scripts', 'f
 
 // Удаляем все лишние файлы: '.gitkeep', 'changelog.md' и 'readme.md'
 gulp.task('misc', async () => {
-	return del.sync(['**/.gitkeep', 'changelog.md', 'readme.md']);
+	return del.sync(['**/.gitkeep', '.assets', 'changelog.md', 'readme.md']);
 });
 
 // Очищаем директорию продакшен билда

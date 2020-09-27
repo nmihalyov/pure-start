@@ -1,7 +1,7 @@
 # Gulp Pure Start
 
-v1.2.2
-![Gulp Pure Start logo](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpWkJ6a09MdnVYdmc)
+![Gulp Pure Start logo](.assets/logo.png)
+v1.2.3
 
 **Gulp Pure Start** позволяет легко и быстро начать работу над проектом с использованием сборщика Gulp.
 
@@ -27,7 +27,7 @@ v1.2.2
  7. Для компиляции проекта в продакшен выполните команду **`gulp prod`**
 
 ## Структура
- ![Gulp Pure Start structure](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpMGRPWGRhZnEwR28)
+![Gulp Pure Start structure](.assets/structure.png)
 
 Стуктура проекта предельно проста:
  + В корневой папке:
@@ -50,20 +50,38 @@ v1.2.2
 
 Выглядит это примерно так:
 
-![Gulp Pure Start components](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpd0Y4dnRnZXMwYmc)
+![Gulp Pure Start components](.assets/components.png)
 
-И подключение компонентов для каждой реализации:
+Подключение компонентов для каждой реализации:
 
-![Gulp Pure Start components usage](https://drive.google.com/uc?export=view&id=0B7lALWrgWMxpR1pBc01oejg5N3c)
+**PUG**:
+
+*Сам компонент является миксином*
+
+![Gulp Pure Start header component](.assets/header-component.png)
+
+*Подключение компонента-миксина*
+
+![Gulp Pure Start component pug](.assets/pug.png)
+
+**SASS**:
+
+![Gulp Pure Start component sass](.assets/sass.png)
+
+**JavaScript**:
+
+![Gulp Pure Start component js](.assets/js.png)
 
 ## Рекомендации к использованию
-Чтобы работа над проектом с **Gulp Pure Start** была легче и быстрее, рекомендую придерживаться следующих правил:
+Чтобы работа над проектом с **Gulp Pure Start** была легче и быстрее, рекомендуется придерживаться следующих правил:
 1. Придерживайтесь изначальной структуры файлов/папок
 2. **HTML** файлы по умолчанию компилируются в корень **build**, при необходимости можно изменить в  **gulpfile.js**: таск pug, строка **`.pipe(gulp.dest(${build}))`**
 3. Все библиотеки устанавливаются в **node_modules**. Для их подключения используйте файл **js/libs.js** c директивой **@@include** (напр. **`@@include('../../node_modules/jquery/dist/jquery.js')`**), точно также можно импортировать несколько файлов JS в один результирующий для более удобной архитектуры (eсли вам надо подключить SASS/CSS, то подключайте их в **_libs.sass** (который нужно импортировать в style.sass или подключать библиотеки сразу в нём)
 4. По-умолчанию из SASS-файлов компилируется только **style.sass**, остальные файлы стилей следует импротировать в него, или заменить строку таска **sass** **`return gulp.src('dev/sass/style.sass')`** на **`return gulp.src('dev/sass/*.sass')`**
 5. В верстку стоит подключать **минифицированные файлы** — style.min.css/common.min.js/libs.min.js, т.к. именно **они попадают затем в билд!**
 6. Существует шаблон Pug для более быстрого старта - **dev/pug/index.pug**
+7. В папке **dev/pug/assets** находятся следующие вспомогательные файлы разметки: **_base.pug** – базовые стили для всего проекта, **_links.pug** – содержит все теги link для раздела head, **_metas.pug** – содержит все теги meta для раздела head, **_og.pug** – метатеги OpenGraph, **_scripts.pug** – подключение скриптов
+8. В папке **dev/sass/assets** находятся следующие вспомогательные файлы стилей: **_base.sass** – базовые стили для всего проекта, **_fonts.sass** – подключение всех шрифтов, **_mixins.sass** – файл для миксинов, **_vars.sass** – глобальные переменные для стилей проекта
 
 ### [Патчноут](https://github.com/nmihalyov/gulp-pure-start/blob/master/changelog.md)
 
