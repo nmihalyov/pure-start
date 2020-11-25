@@ -1,7 +1,7 @@
 /*
  * Gulp Pure Start © 2017 – 2020, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v1.2.3
+ * v1.2.4
  */
 
 'use strict';
@@ -24,14 +24,12 @@ const gulp     = require('gulp'),                       // Сам сборщик
 	critical     = require('critical').stream,            // Создание критических стилей
 	del          = require('del'),                        // Удаление файлов директории
 	imagemin     = require('gulp-imagemin'),              // Минификация изображений (в зависимостях также идут дополнительные пакеты)
-	cache        = require('gulp-cache'),                 // Работа с кэшом
 	autoprefixer = require('gulp-autoprefixer'),          // Расстановка вендорных перфиксов
 	plumber      = require('gulp-plumber'),               // Предотвращение разрыв pipe'ов, вызванных ошибками gulp-плагинов
 	notify       = require('gulp-notify'),                // Вывод уведомления
   importFile   = require('gulp-file-include'),          // Импорт файлов (@@include('path/to/file'))
-  imageminJpeg = require('imagemin-jpegtran'),
-  imageminPng  = require('imagemin-optipng'),
-  imageminGif  = require('imagemin-gifsicle');
+  imageminJpeg = require('imagemin-mozjpeg'),
+  imageminPng  = require('imagemin-pngquant');
 
 // Компилируем SASS (можно изменить на SCSS) в CSS с минификацией и добавляем вендорные префиксы
 gulp.task('sass', () => {
@@ -175,13 +173,16 @@ gulp.task('jsLibs', () => {
 	}));
 });
 
-// Минифицируем изображения и кидаем их в кэш
+// Минифицируем изображения
 gulp.task('img', () => {
 	return gulp.src(`${dev}/img/**/*`)          // путь ко всем изображениям
-	.pipe(cache(imagemin([                      // сжатие изображений без потери качества
-		imageminGif(),                            // сжатие gif
+	.pipe(imagemin([                            // сжатие изображений без потери качества
 		imageminJpeg(),                           // сжатие jpeg
-		imageminPng()])))                         // сжатие png
+    imageminPng()                             // сжатие png
+  ], {
+    progressive: true,
+    strip: true
+  }))
 	.pipe(gulp.dest(`${build}/img`));           // путь вывода файлов
 });
 
@@ -233,11 +234,6 @@ gulp.task('misc', async () => {
 // Очищаем директорию продакшен билда
 gulp.task('clean', async () => {
 	return del.sync(`${prod}/**/*`);
-});
-
-// Чистим кэш изображений (вообще весь кэш)
-gulp.task('clear', async () => {
-	return cache.clearAll();
 });
 
 // Собираем наш билд в продакшен
