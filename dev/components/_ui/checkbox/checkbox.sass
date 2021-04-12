@@ -1,0 +1,58 @@
+.checkbox
+  display: flex
+  flex-flow: row nowrap
+  align-items: flex-start
+  cursor: pointer
+  &:hover
+    .checkbox__box
+      border-color: $black
+  &__input
+    opacity: 0
+    visibility: hidden
+    width: 0
+    height: 0
+    margin: 0
+    &:checked ~ .checkbox__box
+      background-color: $black
+      border-color: $black
+    &:checked ~ .checkbox__box .checkbox__box-mark:before
+      height: 7px
+      transition: all .15s ease-in
+    &:checked ~ .checkbox__box .checkbox__box-mark:after
+      width: 12px
+      transition: all .15s ease-in .15s
+  &__box
+    flex-shrink: 0
+    width: 20px
+    height: 20px
+    margin-right: 10px
+    border: 1px solid transparentize($black, 0.5)
+    border-radius: 4px
+    background-color: #fff
+    transition: all .3s ease
+    &-mark
+      position: relative
+      top: 4px
+      left: 3px
+      width: 12px
+      height: 7px
+      transform: rotate(-45deg)
+      &:after,
+      &:before
+        content: ""
+        position: absolute
+        background-color: #fff
+      &:before
+        height: 0
+        width: 2px
+        transition: all .15s ease-out .15s
+      &:after
+        top: 5px
+        height: 2px
+        width: 0
+        transition: all .15s ease-out
+  &__text
+    padding-top: 2px
+    font:
+      size: 14px
+      weight: 500

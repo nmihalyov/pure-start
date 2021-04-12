@@ -1,0 +1,63 @@
+.popup
+  z-index: 999999
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  display: none
+  cursor: pointer
+  &--opened
+    .popup__backdrop
+      opacity: 1
+    .popup__window
+      opacity: 1
+      transform: none
+  &__container
+    position: relative
+    width: 100%
+    height: 100%
+    padding: 50px 0
+    overflow: scroll
+  &__backdrop
+    opacity: 0
+    z-index: 1
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-color: rgba(0, 0, 0, 0.7)
+    transition: opacity .3s ease
+  &__wrapper
+    z-index: 2
+    position: relative
+    min-height: 100%
+    width: 100%
+    display: flex
+    flex-flow: row nowrap
+    justify-content: center
+    align-items: center
+  &__window
+    opacity: 0
+    position: relative
+    max-width: 400px
+    width: 100%
+    padding: 30px 20px
+    background-color: #fff
+    border-radius: 8px
+    transform: translateY(-50px)
+    transition: all .3s ease
+    cursor: auto
+  &__close
+      position: absolute
+      top: 10px
+      right: 10px
+      width: 22px
+      height: 22px
+      cursor: pointer
+      background:
+        image: url('data:image/svg+xml,%3Csvg%20width%3D%2222%22%20height%3D%2223%22%20viewBox%3D%220%200%2022%2023%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%2216.9951%22%20y%3D%226.99854%22%20width%3D%2215%22%20height%3D%222%22%20transform%3D%22rotate%28135%2016.9951%206.99854%29%22%20fill%3D%22%23333333%22%2F%3E%0A%3Crect%20width%3D%2215%22%20height%3D%222%22%20transform%3D%22matrix%280.707107%200.707107%200.707107%20-0.707107%204.97461%206.99902%29%22%20fill%3D%22%23333333%22%2F%3E%0A%3C%2Fsvg%3E')
+        size: contain
+        position: center
+        repeat: no-repeat

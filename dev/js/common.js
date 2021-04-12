@@ -1,5 +1,7 @@
 window.onload = () => {
 
-  @@include('../components/component/component.js')
+  @@include('./assets/api.js')
+
+  @@include('../components/_ui/popup/popup.js')
 
 }

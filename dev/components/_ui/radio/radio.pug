@@ -1,0 +1,5 @@
+mixin radio(text, name, value, className, required, checked)
+  label.radio(class=`${className || ''}`)
+    input.radio__input(type="radio", name=name, value=value, required=required, checked=checked)
+    .radio__box
+    p.radio__text!= text

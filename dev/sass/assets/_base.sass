@@ -1,18 +1,32 @@
-*
+*,
+*:before,
+*:after
   box-sizing: border-box
-  
+  margin: 0
+  padding: 0
+  text-size-adjust: none
+
 body
   width: 100%
+  min-height: 100vh
+  line-height: 1.4
+  @include font-fix
   font:
-    family: 'Proxima Nova', Helvetica, sans-serif
+    family: 'Montserrat', Helvetica, sans-serif
     size: 18px
-    weight: 300
+    weight: 400
 
 p
   margin: 0
 
 h1, h2, h3, h4, h5, h6
   margin: 0
+
+a
+  color: $black
+  transition: color .3s ease
+  &:hover
+    color: transparentize($black, 0.2)
 
 .container
   width: 100%

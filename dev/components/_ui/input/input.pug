@@ -1,0 +1,14 @@
+mixin input(type, label, name, placeholder, value, className, options)
+  label.input(class=`${className || ''}`)
+    if label.length
+      p.input__label= label
+    input.input__field(
+      class=`${className ? className + '-field' : ''}`,
+      type=type,
+      name=name,
+      required=required,
+      placeholder=placeholder,
+      value=value,
+      readonly=options && options.readonly)
+    if options && options.error
+      p.input__error= options.error

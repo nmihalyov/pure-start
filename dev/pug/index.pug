@@ -1,3 +1,12 @@
+include ../components/header/header
+include ../components/footer/footer
+
+include ../components/_ui/button/button
+include ../components/_ui/input/input
+include ../components/_ui/checkbox/checkbox
+include ../components/_ui/radio/radio
+include ../components/_ui/popup/popup
+
 doctype
 html(lang="ru", prefix="og: http://ogp.me/ns#")
   head
@@ -7,3 +16,52 @@ html(lang="ru", prefix="og: http://ogp.me/ns#")
     include assets/_scripts
   body
     .page-wrapper
+      +header
+
+      section.container 
+        .wrapper
+          h1(style="margin: 35px 0") Gulp Pure Start 
+            sup(style="font-size: 12px") v1.3.0
+          h3(style="margin-bottom: 25px") Примеры компонентов
+          
+          h4(style="margin-bottom: 10px") 1. Кнопки
+          div(style="display: flex; margin-bottom: 10px")
+            div(style="margin-right: 10px")
+              +button('primary', 'link', 'Основная', '', {link: '#'})
+            div
+              +button('secondary', 'link', 'Второстепенная', '', {link: '#'})
+          div(style="display: flex; margin-bottom: 25px")
+            div(style="margin-right: 10px")
+              +button('primary', 'link', 'Основная отключена', '', {link: '#', disabled: true})
+            div
+              +button('secondary', 'link', 'Второстепенная отключена', '', {link: '#', disabled: true})
+
+          h4(style="margin-bottom: 10px") 2. Инпуты
+          div(style="max-width: 400px; margin-bottom: 10px")
+            +input('text', 'Лейбл:', 'data', 'Плейсхолдер', '', '', {error: 'Неверные данные'})
+          div(style="max-width: 400px; margin-bottom: 10px")
+            +input('text', '', 'data', 'Плейсхолдер', 'Только для чтения', '', {readonly: true})
+          div(style="max-width: 400px; margin-bottom: 25px")
+            +input('text', 'Инпут с ошибкой:', 'error', 'Плейсхолдер', 'Текст', 'input--error', {error: 'Неверные данные'})
+
+          h4(style="margin-bottom: 10px") 3. Чекбоксы
+          div(style="max-width: 400px; margin-bottom: 25px")
+            +checkbox('Согласен с <a href="#">Политикой конфиденциальности</a>', 'policy', '', true)
+
+          h4(style="margin-bottom: 10px") 4. Радио-кнопки
+          div(style="margin-bottom: 10px")
+            +radio('Вариант 1', 'variant', '1', '', false, true)
+          div(style="margin-bottom: 10px")
+            +radio('Вариант 2', 'variant', '2')
+          div(style="margin-bottom: 10px")
+            +radio('Вариант 3', 'variant', '3')
+          div(style="margin-bottom: 25px")
+            +radio('Вариант 4', 'variant', '4')
+
+          h4(style="margin-bottom: 10px") 5. Попапы
+          div(style="margin-bottom: 25px")
+            +button('primary', 'popup', 'Открыть попап', '', {popup: 'form'})
+
+      +footer
+
+    +popup('form')

@@ -1,0 +1,56 @@
+.input
+  display: block
+  &:hover
+    .input__field:not([readonly])
+      border-color: $black
+  &--error
+    .input__error
+      display: block;
+  &__label
+    margin-bottom: 5px
+    color: $black
+    font:
+      size: 14px
+      weight: 500
+  &__field
+    display: block
+    width: 100%
+    padding: 10px 15px
+    border: 1px solid transparentize($black, 0.5)
+    border-radius: 4px
+    background-color: #fff
+    outline: 0
+    line-height: 1.33
+    word-break: keep-all
+    -webkit-appearance: none
+    transition: border-color .3s ease
+    font:
+      family: 'Montserrat', Helvetica, sans-serif
+      size: 14px
+      weight: 500
+    &[readonly]
+      background-color: #efefef
+    &:not([readonly]):focus
+      border-color: $black
+    &::placeholder
+      opacity: 0.5
+      color: $black
+    &::-webkit-input-placeholder
+      opacity: 0.5
+      color: $black
+    &::-moz-placeholder
+      opacity: 0.5
+      color: $black
+    &:-ms-input-placeholder
+      opacity: 0.5
+      color: $black
+    &:-moz-placeholder
+      opacity: 0.5
+      color: $black
+  &__error
+    display: none
+    margin: 5px 0
+    color: #FF564E
+    font:
+      size: 14px
+      weight: 500

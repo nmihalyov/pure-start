@@ -1,1 +1,1 @@
-@@include('../../node_modules/YOUR_LIBRARY')
+@@include('../../node_modules/YOUR_LIBRARY') // пример импорта

@@ -1,0 +1,14 @@
+mixin button(style, type, text, className, options)
+  - className = `button--${style} ${className || ''}`
+
+  if options && options.disabled
+    - className += 'button--disabled'
+
+  if type === 'link'
+    a.button(class=className, href=options.link)= text
+  else if type === 'button'
+    button.button(class=className)= text
+  else if type === 'popup'
+    button.button.js-open-popup(class=className, data-popup=options.popup)= text
+  else if type === 'submit'
+    button.button(type="submit", class=className)= text
