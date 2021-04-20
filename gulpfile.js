@@ -1,5 +1,5 @@
 /*
- * Gulp Pure Start © 2017 – 2020, Nikita Mihalyov <nikita.mihalyov@gmail.com>
+ * Gulp Pure Start © 2017 – 2021, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
  * v1.3.0
  */

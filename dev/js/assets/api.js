@@ -1,8 +1,8 @@
 // Объект глобального API
-const _api = {};
+const $api = {};
 
 // API для работы с попапами
-_api.popup = ($popup, { onHide, onShow } = {}) => {
+$api.popup = ($popup, { onHide, onShow } = {}) => {
   // Отключает возможность скроллить страницу
   const hideOverflow = () => {
     document.body.style.cssText = `position: fixed; margin-top: ${-window.scrollY}px`;
