@@ -1,7 +1,7 @@
 # Gulp Pure Start
 
 ![Gulp Pure Start logo](.assets/logo.png)
-v1.3.0
+v1.3.1
 
 **Gulp Pure Start** позволяет легко и быстро начать работу над проектом с использованием сборщика Gulp.
 

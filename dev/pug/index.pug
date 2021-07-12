@@ -21,7 +21,7 @@ html(lang="ru", prefix="og: http://ogp.me/ns#")
       section.container 
         .wrapper
           h1(style="margin: 35px 0") Gulp Pure Start 
-            sup(style="font-size: 12px") v1.3.0
+            sup(style="font-size: 12px") v1.3.1
           h3(style="margin-bottom: 25px") Примеры компонентов
           
           h4(style="margin-bottom: 10px") 1. Кнопки
@@ -38,11 +38,11 @@ html(lang="ru", prefix="og: http://ogp.me/ns#")
 
           h4(style="margin-bottom: 10px") 2. Инпуты
           div(style="max-width: 400px; margin-bottom: 10px")
-            +input('text', 'Лейбл:', 'data', 'Плейсхолдер', '', '', {error: 'Неверные данные'})
+            +input('text', 'Лейбл:', 'data', 'Плейсхолдер', '', {required: true, error: 'Неверные данные'})
           div(style="max-width: 400px; margin-bottom: 10px")
-            +input('text', '', 'data', 'Плейсхолдер', 'Только для чтения', '', {readonly: true})
+            +input('text', '', 'data', 'Плейсхолдер', '', {value: 'Только для чтения', required: true, readonly: true})
           div(style="max-width: 400px; margin-bottom: 25px")
-            +input('text', 'Инпут с ошибкой:', 'error', 'Плейсхолдер', 'Текст', 'input--error', {error: 'Неверные данные'})
+            +input('text', 'Инпут с ошибкой:', 'error', 'Плейсхолдер', 'input--error', {value: 'Текст', required: true, error: 'Неверные данные'})
 
           h4(style="margin-bottom: 10px") 3. Чекбоксы
           div(style="max-width: 400px; margin-bottom: 25px")

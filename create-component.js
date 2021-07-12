@@ -4,7 +4,7 @@ const path = require('path');
 
 let basePath = './dev/components/';
 const files = {
-  pug: `mixin {component}\n\t.{component}`,
+  pug: `mixin {component}\n  .{component}`,
   sass: `.{component}`
 };
 
@@ -43,7 +43,7 @@ if (args.includes('--js')) {
 }
 
 if (args.includes('--section')) {
-  files.pug = `mixin {component}\n\tsection.{component}.container\n\t\t.{component}__wrapper.wrapper`;
+  files.pug = `mixin {component}\n  section.{component}.container\n    .{component}__wrapper.wrapper`;
 }
 
 args.map(component => {

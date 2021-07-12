@@ -1,4 +1,4 @@
-mixin input(type, label, name, placeholder, value, className, options)
+mixin input(type, label, name, placeholder, className, options)
   label.input(class=`${className || ''}`)
     if label.length
       p.input__label= label
@@ -6,9 +6,9 @@ mixin input(type, label, name, placeholder, value, className, options)
       class=`${className ? className + '-field' : ''}`,
       type=type,
       name=name,
-      required=required,
+      required=options && options.required,
       placeholder=placeholder,
-      value=value,
+      value=options && options.value,
       readonly=options && options.readonly)
     if options && options.error
       p.input__error= options.error
