@@ -1,0 +1,8 @@
+mixin checkbox(text, name, className, required, checked, options)
+  - isDisabled = options && options.disabled
+
+  label.checkbox(class=`${className || ''}`)
+    input.checkbox__input(type="checkbox", name=name, required=required, checked=checked, disabled=isDisabled)
+    .checkbox__box
+      .checkbox__box-mark
+    p.checkbox__text!= text

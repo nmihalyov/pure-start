@@ -1,0 +1,19 @@
+include /components/header/header
+include /components/footer/footer
+include /components/_ui/popup/popup
+
+block variables
+
+doctype html
+html(lang='en')
+  head
+    title #{title}
+    include ../utils/metas
+    include ../utils/links
+
+  body
+    .page-wrapper
+      +header
+      block content
+      +footer
+    +popup('form')

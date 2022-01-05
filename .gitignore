@@ -1,0 +1,7 @@
+/dist
+.DS_Store
+/stats.json
+/node_modules
+/coverage
+/yarn.lock
+/package-lock.json

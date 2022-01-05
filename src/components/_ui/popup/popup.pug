@@ -1,0 +1,22 @@
+include ../../_ui/input/input
+include ../../_ui/button/button
+
+mixin popup(type, id = type)
+  .popup.js-popup(data-popup=id)
+    .popup__backdrop
+    .popup__container.js-close-popup
+      .popup__wrapper
+        .popup__window
+          button.popup__close.js-close-popup
+          if type === 'form'
+            form.popup__form(action="")
+              p(style="margin-bottom: 20px; text-align: center") Login form
+              div(style="margin-bottom: 10px;")
+                +input('email', 'E-mail:', 'email', 'Your e-mail', '', {error: 'Invalid e-mail'})
+              div(style="margin-bottom: 20px;")
+                +input('password', 'Password:', 'password', 'Enter your password', '', {error: 'Invalid password'})
+              div(style="display: flex; justify-content: center; flex-wrap: wrap")
+                div(style="margin: 5px;")
+                  +button('primary', 'submit', 'Login')
+                div(style="margin: 5px;")
+                  +button('secondary', 'link', 'Cancel', 'js-close-popup', {link: '#'})

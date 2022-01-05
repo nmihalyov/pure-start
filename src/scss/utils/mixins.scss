@@ -1,0 +1,89 @@
+// adds dimensions
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+// flex helpers
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column-center {
+  @include flex-center;
+  flex-direction: column;
+}
+
+@mixin flex-center-vert {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flex-center-horiz {
+  display: flex;
+  justify-content: center;
+}
+
+// font display fix
+@mixin font-fix {
+  text-size-adjust: none;
+  font-smoothing: antialiased;
+}
+
+// clears ordered/unordered lists
+@mixin clear-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+// set style rules to placeholder
+@mixin placeholder {
+  &::placeholder {
+    @content;
+  }
+  &::-webkit-input-placeholder {
+    @content;
+  }
+  &:-moz-placeholder {
+    @content;
+  }
+  &::-moz-placeholder {
+    @content;
+  }
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+
+// truncates string
+@mixin truncate($truncation-boundary) {
+  overflow: hidden;
+  max-width: $truncation-boundary;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// background helpers
+@mixin bg-cover {
+  background: {
+    size: cover;
+    position: center;
+    repeat: no-repeat;
+  }
+}
+
+@mixin bg-contain {
+  background: {
+    size: contain;
+    position: center;
+    repeat: no-repeat;
+  }
+}

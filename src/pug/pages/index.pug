@@ -1,0 +1,57 @@
+extends ../layouts/main
+
+include /components/_ui/button/button
+include /components/_ui/input/input
+include /components/_ui/checkbox/checkbox
+include /components/_ui/radio/radio
+include /components/_ui/popup/popup
+
+block variables
+  - const title = 'Document'
+  - const description = 'Page description'
+
+block content
+  section.container 
+    .wrapper
+      h1(style="margin: 35px 0") Pure Start 
+        sup(style="font-size: 12px") v2.0.0
+      //- img(src=require("@/assets/images/static/logo.png"), alt="")
+      h3(style="margin-bottom: 25px") Components examples
+      
+      h4(style="margin-bottom: 10px") 1. Buttons
+      div(style="display: flex; margin-bottom: 10px")
+        div(style="margin-right: 10px")
+          +button('primary', 'link', 'Primary', '', {link: '#'})
+        div
+          +button('secondary', 'link', 'Secondary', '', {link: '#'})
+      div(style="display: flex; margin-bottom: 25px")
+        div(style="margin-right: 10px")
+          +button('primary', 'link', 'Primary disabled', '', {link: '#', disabled: true})
+        div
+          +button('secondary', 'link', 'Secondary disabled', '', {link: '#', disabled: true})
+
+      h4(style="margin-bottom: 10px") 2. Inputs
+      div(style="max-width: 400px; margin-bottom: 10px")
+        +input('text', 'Label:', 'data', 'Placeholder', '', {required: true, error: 'Invalid data'})
+      div(style="max-width: 400px; margin-bottom: 10px")
+        +input('text', '', 'data', 'Placeholder', '', {value: 'Read-only', required: true, readonly: true})
+      div(style="max-width: 400px; margin-bottom: 25px")
+        +input('text', '', 'error', 'Placeholder', 'input--error', {value: 'Value', required: true, error: 'Invalid data'})
+
+      h4(style="margin-bottom: 10px") 3. Checkboxes
+      div(style="max-width: 400px; margin-bottom: 25px")
+        +checkbox('I accept <a href="#">Privacy policy </a>', 'policy', '', true, true)
+
+      h4(style="margin-bottom: 10px") 4. Radio buttons
+      div(style="margin-bottom: 10px")
+        +radio('Option 1', 'option', '1', '', false, true)
+      div(style="margin-bottom: 10px")
+        +radio('Option 2', 'option', '2')
+      div(style="margin-bottom: 10px")
+        +radio('Option 3', 'option', '3')
+      div(style="margin-bottom: 25px")
+        +radio('Option 4', 'option', '4')
+
+      h4(style="margin-bottom: 10px") 5. Popups
+      div(style="margin-bottom: 25px")
+        +button('primary', 'popup', 'Open popup', '', {popup: 'form'})
