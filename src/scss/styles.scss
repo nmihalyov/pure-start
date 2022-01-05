@@ -1,0 +1,19 @@
+// libraries
+@import './libs';
+
+// utils
+@import './utils/vars';
+@import './utils/mixins';
+@import './utils/fonts';
+@import './utils/base';
+
+// UI components
+@import '@/components/_ui/button/button';
+@import '@/components/_ui/input/input';
+@import '@/components/_ui/checkbox/checkbox';
+@import '@/components/_ui/radio/radio';
+@import '@/components/_ui/popup/popup';
+
+// components
+@import '@/components/header/header';
+@import '@/components/footer/footer';

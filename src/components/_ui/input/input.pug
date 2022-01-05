@@ -1,0 +1,17 @@
+mixin input(type, label, name, placeholder, className, options)
+  - isDisabled = options && options.disabled
+
+  label.input(class=`${className || ''}`)
+    if label.length
+      p.input__label= label
+    input.input__field(
+      class=`${className ? className + '-field' : ''}`,
+      type=type,
+      name=name,
+      required=options && options.required,
+      placeholder=placeholder,
+      value=options && options.value,
+      disabled=isDisabled,
+      readonly=options && options.readonly)
+    if options && options.error
+      p.input__error= options.error

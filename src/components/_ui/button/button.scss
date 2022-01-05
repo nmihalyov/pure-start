@@ -1,0 +1,60 @@
+.button {
+  display: inline-flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  min-width: 160px;
+  padding: 10px 15px;
+  border: none;
+  text-decoration: none;
+  transition: all .3s ease;
+  color: $white;
+  cursor: pointer;
+  text-align: center;
+  font: {
+    size: 16px;
+    weight: 500;
+  }
+  &--primary {
+    background-color: $red;
+    &.button--disabled {
+      background-color: $gray2;
+    }
+    &:hover {
+      background-color: $red2;
+      color: $white;
+    }
+    &:active {
+      background-color: $red3;
+      transition: none;
+    }
+  }
+  &--secondary {
+    padding: 9px 14px;
+    border: 1px solid $black;
+    color: $black;
+    &.button--disabled {
+      border-color: $gray;
+    }
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
+    &:active {
+      border-color: lighten($black, 7);
+      background-color: lighten($black, 7);
+      transition: none;
+    }
+  }
+  &--disabled {
+    pointer-events: none;
+    color: $gray;
+  }
+}
+
+@media only screen and (max-width: $mobile) {
+  .button {
+    min-width: 145px;
+    font-size: 14px;
+  }
+}

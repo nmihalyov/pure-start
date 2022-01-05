@@ -1,0 +1,85 @@
+{
+  "env": {
+    "es2020": true,
+    "browser": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"],
+    "sourceType": "module",
+    "ecmaVersion": 2020
+  },
+  "extends": [
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "no-plusplus": "off",
+    "class-methods-use-this": "off",
+    "array-callback-return": "off",
+    "arrow-body-style": "off",
+    "no-param-reassign": "off",
+    "consistent-return": "off",
+    "guard-for-in": "warn",
+    "no-underscore-dangle": "off",
+    "no-restricted-syntax": "off",
+    "default-case": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreUrls": true,
+        "ignoreRegExpLiterals": true,
+        "ignorePattern": "^import\\s.+\\sfrom\\s.+;$"
+      }
+    ],
+
+    "require-jsdoc": "off",
+    "object-curly-newline": "off",
+    "prefer-destructuring": "off",
+    "no-case-declarations": "off",
+    "no-console": [
+      2,
+      {
+        "allow": ["info", "warn", "error"]
+      }
+    ],
+
+    "import/extensions": "off",
+    "import/no-dynamic-require": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+
+    "@typescript-eslint/prefer-regexp-exec": "off",
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unsafe-member-access": "warn",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
+    "@typescript-eslint/no-unsafe-return": "warn",
+    "@typescript-eslint/no-unsafe-call": "warn",
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/no-use-before-define": ["error", { "functions": false }],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "variable",
+        "format": ["camelCase", "UPPER_CASE", "snake_case", "PascalCase"],
+        "leadingUnderscore": "allow"
+      }
+    ]
+  }
+}

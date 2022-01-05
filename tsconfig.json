@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "baseUrl": "./src",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noImplicitAny": true,
+    "paths": { 
+      "@/*": ["./*"]
+    }
+  },
+  "file": ["src/**/*.ts", "src/**/*.js"],
+  "exclude": ["node_modules", "dist"]
+}
