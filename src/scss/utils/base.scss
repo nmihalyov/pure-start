@@ -13,6 +13,7 @@
   &:focus-visible:not([disabled]):not([readonly]) {
     outline: 2px solid $lightBlue;
     outline-offset: 0;
+    transition: outline 0s;
   }
 }
 
@@ -74,8 +75,8 @@ a {
 
   .container {
     .wrapper {
-      max-width: 320px;
-      padding: 0 10px;
+      max-width: 440px;
+      padding: 0 15px;
     }
   }
 }

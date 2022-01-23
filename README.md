@@ -1,5 +1,7 @@
 # Pure Start
 
+[Demo](https://nmihalyov.tk/pure-start)
+
 **Pure Start** is a boilerplate that allows you to start working on a new project fast and easy. It provides you with a clean and flexible environment to create static applications and can be extended to create something more complex.
 
 ## Features
@@ -63,3 +65,24 @@ At the root there a some config files and script for creating components via CLI
 `scss` for global styles (don't write component specific styles here).
 
 `index.js` is entry point for youe JS/TS files.
+
+## Importing images
+### Pug
+To import image in pug files use **require**. E.g.:
+
+`img(src=require("@/assets/images/static/logo.png"), alt="Logo")`
+
+### Scss
+To use images in scss you can simply do it as you did before. E.g.:
+
+`background-image: url('@/assets/images/icons/github-white.svg')`
+
+## Feedback
+
+E-mail: [nikita.mihalyov@gmail.com](mailto:nikita.mihalyov@gmail.com)
+
+Teleegram: [@nmihalyov](http://t.me/nmihalyov)
+
+Website: [nmihalyov.tk](https://nmihalyov.tk)
+
+[Write issue](https://github.com/nmihalyov/pure-start/issues/new)

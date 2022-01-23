@@ -1,7 +1,7 @@
 /*
- * Pure Start © 2017 – 2021, Nikita Mihalyov <nikita.mihalyov@gmail.com>
+ * Pure Start © 2017 – 2022, Nikita Mihalyov <nikita.mihalyov@gmail.com>
  * ISC Licensed
- * v2.0.0
+ * v2.0.1
  */
 
 const path = require('path');
