@@ -81,7 +81,9 @@ To use images in scss you can simply do it as you did before. E.g.:
 
 E-mail: [nikita.mihalyov@gmail.com](mailto:nikita.mihalyov@gmail.com)
 
-Teleegram: [@nmihalyov](http://t.me/nmihalyov)
+LinkedIn: [nmihalyov](https://linkedin.com/in/nmihalyov)
+
+Telegram: [@nmihalyov](https://t.me/nmihalyov)
 
 Website: [nmihalyov.tk](https://nmihalyov.tk)
 
